@@ -3513,291 +3513,246 @@ function GuaranteeSection() {
     </Section>
   );
 }
-const PLANS = [
+const CONSULTATION_CTA = {
+  en: "Start Your Free Consultation",
+  ar: "ابدأ استشارتك المجانية",
+};
+
+type PricingPlan = {
+  name: Copy;
+  badge: Copy;
+  for: Copy;
+  price: number;
+  popular?: boolean;
+  ribbon?: boolean;
+  intro: Copy;
+  items: Copy[];
+  note?: Copy;
+};
+
+const SOFTWARE_PLANS: PricingPlan[] = [
   {
-    name: {
-      en: "Foundation",
-      ar: "التأسيس",
-    },
-    price: 1500,
+    name: { en: "Starter", ar: "الأساسية" },
+    badge: { en: "Foundation", ar: "التأسيس" },
     for: {
-      en: "For owners who need every enquiry captured in one place.",
-      ar: "لأصحاب الأعمال الذين يريدون جمع كل استفسار في مكان واحد.",
-    },
-    cta: {
-      en: "Start With Foundation",
-      ar: "ابدأ بباقة التأسيس",
-    },
-    popular: false,
-    intro: {
-      en: "Includes",
-      ar: "تشمل",
-    },
-    items: [
-      { en: "Lead capture", ar: "التقاط العملاء" },
-      { en: "Forms", ar: "النماذج" },
-      { en: "WhatsApp inbox", ar: "صندوق واتساب" },
-      { en: "Basic pipeline", ar: "مسار أساسي" },
-      { en: "Email follow-up", ar: "متابعة بالبريد" },
-      { en: "Technical support", ar: "دعم تقني" },
-    ],
-  },
-  {
-    name: {
-      en: "Starter",
-      ar: "الأساسية",
+      en: "The essentials to capture, organize and follow up every lead.",
+      ar: "الأساسيات لالتقاط كل عميل وتنظيمه ومتابعته.",
     },
     price: 2500,
-    for: {
-      en: "For small businesses that need structure.",
-      ar: "للشركات الصغيرة التي تحتاج إلى نظام واضح.",
-    },
-    cta: {
-      en: "Start With Revenue OS",
-      ar: "ابدأ مع نظام الإيرادات",
-    },
-    popular: false,
-    intro: {
-      en: "Includes",
-      ar: "تشمل",
-    },
+    intro: { en: "Includes", ar: "تشمل" },
     items: [
-      {
-        en: "CRM",
-        ar: "نظام إدارة العملاء",
-      },
-      {
-        en: "Sales pipeline",
-        ar: "مسار المبيعات",
-      },
-      {
-        en: "Unified inbox",
-        ar: "صندوق وارد موحّد",
-      },
-      {
-        en: "WhatsApp integration",
-        ar: "ربط واتساب",
-      },
-      {
-        en: "Lead capture",
-        ar: "التقاط العملاء",
-      },
-      {
-        en: "Forms",
-        ar: "النماذج",
-      },
-      {
-        en: "Calendar",
-        ar: "التقويم",
-      },
-      {
-        en: "Email automation",
-        ar: "أتمتة البريد",
-      },
-      {
-        en: "Basic follow-up workflows",
-        ar: "مسارات متابعة أساسية",
-      },
-      {
-        en: "Review automation",
-        ar: "أتمتة التقييمات",
-      },
-      {
-        en: "Basic dashboard",
-        ar: "لوحة أساسية",
-      },
-      {
-        en: "Technical support",
-        ar: "دعم تقني",
-      },
+      { en: "CRM & sales pipeline", ar: "نظام العملاء ومسار المبيعات" },
+      { en: "Unified conversations inbox", ar: "صندوق محادثات موحّد" },
+      { en: "Forms & lead capture", ar: "نماذج والتقاط العملاء" },
+      { en: "Appointment booking", ar: "حجز المواعيد" },
+      { en: "Lead source tracking", ar: "تتبع مصادر العملاء" },
+      { en: "1 landing page / funnel", ar: "صفحة مقصودة / قمع واحد" },
+      { en: "Email nurture & speed to lead", ar: "رعاية بالبريد وسرعة الرد" },
+      { en: "Basic routing & reporting", ar: "توجيه وتقارير أساسية" },
+      { en: "2 lead connectors", ar: "موصّلان للعملاء" },
+      { en: "1 location", ar: "موقع واحد" },
     ],
+    note: {
+      en: "WhatsApp available as an add-on.",
+      ar: "واتساب متاح كإضافة اختيارية.",
+    },
   },
   {
-    name: {
-      en: "Growth",
-      ar: "النمو",
+    name: { en: "Professional", ar: "الاحترافية" },
+    badge: { en: "Recommended", ar: "موصى بها" },
+    for: {
+      en: "For teams that want stronger automation, recovery and conversion workflows.",
+      ar: "للفرق التي تريد أتمتة أقوى ومسارات استرجاع وتحويل أفضل.",
     },
     price: 3500,
-    for: {
-      en: "For teams ready to automate conversion.",
-      ar: "للفرق الجاهزة لأتمتة التحويل.",
-    },
-    cta: {
-      en: "Build My Revenue Engine",
-      ar: "ابنِ محرك إيراداتي",
-    },
     popular: true,
     intro: {
       en: "Everything in Starter, plus",
       ar: "كل ما في الأساسية، بالإضافة إلى",
     },
     items: [
-      {
-        en: "AI Sales Agent",
-        ar: "وكيل المبيعات الذكي",
-      },
-      {
-        en: "AI lead qualification",
-        ar: "تأهيل ذكي للعملاء",
-      },
-      {
-        en: "Advanced WhatsApp automation",
-        ar: "أتمتة واتساب المتقدمة",
-      },
-      {
-        en: "Multi-channel nurturing",
-        ar: "رعاية متعددة القنوات",
-      },
-      {
-        en: "Database reactivation",
-        ar: "إعادة تنشيط القاعدة",
-      },
-      {
-        en: "Advanced workflows",
-        ar: "مسارات متقدمة",
-      },
-      {
-        en: "Lead scoring",
-        ar: "تقييم العملاء",
-      },
-      {
-        en: "No-show recovery",
-        ar: "استرجاع الغائبين",
-      },
-      {
-        en: "Marketing campaigns",
-        ar: "الحملات التسويقية",
-      },
-      {
-        en: "Advanced dashboards",
-        ar: "لوحات متقدمة",
-      },
-      {
-        en: "Monthly optimisation",
-        ar: "تحسين شهري",
-      },
+      { en: "WhatsApp integration", ar: "ربط واتساب" },
+      { en: "Up to 3 landing pages / funnels", ar: "حتى 3 صفحات / قنوات" },
+      { en: "Advanced lead routing", ar: "توجيه متقدم للعملاء" },
+      { en: "Missed call recovery", ar: "استرجاع المكالمات الفائتة" },
+      { en: "No-show recovery", ar: "استرجاع الغائبين عن المواعيد" },
+      { en: "Quote / proposal follow-up", ar: "متابعة العروض والأسعار" },
+      { en: "Database reactivation", ar: "إعادة تنشيط القاعدة" },
+      { en: "Social media planner", ar: "مخطط وسائل التواصل" },
+      { en: "Conversation AI – Basic", ar: "ذكاء المحادثة — أساسي" },
+      { en: "5 lead connectors", ar: "5 موصّلات للعملاء" },
+      { en: "3 locations*", ar: "3 مواقع*" },
     ],
+    note: {
+      en: "Best fit for most growing sales teams.",
+      ar: "الأنسب لمعظم فرق المبيعات النامية.",
+    },
   },
   {
-    name: {
-      en: "Professional",
-      ar: "الاحترافية",
-    },
-    price: 4500,
+    name: { en: "Elite", ar: "النخبة" },
+    badge: { en: "Advanced AI", ar: "ذكاء متقدم" },
     for: {
-      en: "For growing teams that need tighter sales control.",
-      ar: "للفرق النامية التي تحتاج ضبطاً أدق للمبيعات.",
+      en: "Advanced AI agents and automation across the full sales journey.",
+      ar: "وكلاء ذكاء وأتمتة متقدمة عبر رحلة المبيعات كاملة.",
     },
-    cta: {
-      en: "Build The Professional System",
-      ar: "ابنِ النظام الاحترافي",
-    },
-    popular: false,
-    intro: {
-      en: "Everything in Growth, plus",
-      ar: "كل ما في النمو، بالإضافة إلى",
-    },
-    items: [
-      { en: "Multiple pipelines", ar: "مسارات متعددة" },
-      { en: "Advanced integrations", ar: "تكاملات متقدمة" },
-      { en: "Custom dashboards", ar: "لوحات مخصصة" },
-      { en: "Priority support", ar: "دعم بأولوية" },
-    ],
-  },
-  {
-    name: {
-      en: "Scale",
-      ar: "التوسع",
-    },
-    price: 5e3,
-    for: {
-      en: "For companies generating serious lead volume.",
-      ar: "للشركات ذات الحجم الكبير من العملاء المحتملين.",
-    },
-    cta: {
-      en: "Talk To A Revenue Architect",
-      ar: "تحدث مع مهندس إيرادات",
-    },
-    popular: false,
+    price: 5000,
     intro: {
       en: "Everything in Professional, plus",
       ar: "كل ما في الاحترافية، بالإضافة إلى",
     },
     items: [
+      { en: "Conversation AI – Advanced", ar: "ذكاء المحادثة — متقدم" },
+      { en: "AI lead qualification", ar: "تأهيل العملاء بالذكاء الاصطناعي" },
+      { en: "AI appointment booking", ar: "حجز مواعيد بالذكاء الاصطناعي" },
+      { en: "AI WhatsApp sales agent", ar: "وكيل مبيعات واتساب ذكي" },
       {
-        en: "Advanced AI agents",
-        ar: "وكلاء ذكاء متقدمون",
+        en: "AI voice receptionist / sales agent",
+        ar: "موظف استقبال / مبيعات صوتي ذكي",
       },
-      {
-        en: "Multiple pipelines",
-        ar: "مسارات متعددة",
-      },
-      {
-        en: "Advanced integrations",
-        ar: "تكاملات متقدمة",
-      },
-      {
-        en: "Voice AI where applicable",
-        ar: "ذكاء صوتي عند الإمكان",
-      },
-      {
-        en: "Custom workflow development",
-        ar: "تطوير مسارات مخصصة",
-      },
-      {
-        en: "Advanced sales automation",
-        ar: "أتمتة مبيعات متقدمة",
-      },
-      {
-        en: "Custom dashboards",
-        ar: "لوحات مخصصة",
-      },
-      {
-        en: "Multiple departments / locations",
-        ar: "أقسام وفروع متعددة",
-      },
-      {
-        en: "Advanced campaign management",
-        ar: "إدارة حملات متقدمة",
-      },
-      {
-        en: "Priority support",
-        ar: "دعم بأولوية",
-      },
-      {
-        en: "Dedicated optimisation manager",
-        ar: "مدير تحسين مخصص",
-      },
+      { en: "AI missed-lead recovery", ar: "استرجاع العملاء الفائتين بالذكاء" },
+      { en: "AI follow-up & reactivation", ar: "متابعة وإعادة تنشيط ذكية" },
+      { en: "Up to 5 landing pages / funnels", ar: "حتى 5 صفحات / قنوات" },
+      { en: "10 lead connectors", ar: "10 موصّلات للعملاء" },
+      { en: "Up to 3 locations*", ar: "حتى 3 مواقع*" },
+    ],
+    note: {
+      en: "Built for high-volume and multi-location teams.",
+      ar: "مصمم للفرق ذات الحجم الكبير والمواقع المتعددة.",
+    },
+  },
+];
+
+const AGENT_PLANS: PricingPlan[] = [
+  {
+    name: {
+      en: "Starter + Human Agents",
+      ar: "الأساسية + وكلاء بشريون",
+    },
+    badge: { en: "Essential Team", ar: "فريق أساسي" },
+    for: {
+      en: "Sales OS with an essential execution team behind it.",
+      ar: "نظام المبيعات مع فريق تنفيذ أساسي خلفه.",
+    },
+    price: 5000,
+    intro: { en: "Includes", ar: "تشمل" },
+    items: [
+      { en: "Sales & Marketing OS", ar: "نظام المبيعات والتسويق" },
+      { en: "Digital Advertising Specialist", ar: "أخصائي إعلانات رقمية" },
+      { en: "Graphic Designer", ar: "مصمم جرافيك" },
+      { en: "CRM Expert", ar: "خبير أنظمة العملاء" },
+      { en: "Social Media Manager", ar: "مدير وسائل التواصل" },
+      { en: "Monthly Optimization", ar: "تحسين شهري" },
     ],
   },
   {
     name: {
-      en: "Enterprise",
-      ar: "المؤسسات",
+      en: "Pro + Human Agents",
+      ar: "الاحترافية + وكلاء بشريون",
+    },
+    badge: { en: "Full Growth Team", ar: "فريق نمو كامل" },
+    for: {
+      en: "A full growth team to accelerate pipeline and creative output.",
+      ar: "فريق نمو كامل لتسريع المسار والمخرجات الإبداعية.",
     },
     price: 7500,
-    for: {
-      en: "For multi-branch GCC businesses that need one operating system.",
-      ar: "للشركات متعددة الفروع في الخليج التي تحتاج نظام تشغيل واحد.",
-    },
-    cta: {
-      en: "Talk To A Revenue Architect",
-      ar: "تحدث مع مهندس إيرادات",
-    },
-    popular: false,
+    popular: true,
+    ribbon: true,
     intro: {
-      en: "Everything in Scale, plus",
-      ar: "كل ما في التوسع، بالإضافة إلى",
+      en: "Everything in Starter + Human Agents, plus",
+      ar: "كل ما في الأساسية + الوكلاء، بالإضافة إلى",
     },
     items: [
-      { en: "GCC multi-country rollout", ar: "إطلاق متعدد في دول الخليج" },
-      { en: "Custom AI agents", ar: "وكلاء ذكاء مخصصون" },
-      { en: "Executive reporting", ar: "تقارير للإدارة" },
-      { en: "Dedicated success team", ar: "فريق نجاح مخصص" },
-      { en: "Priority SLA support", ar: "دعم باتفاقية مستوى خدمة" },
+      { en: "SEO Specialist", ar: "أخصائي تحسين محركات البحث" },
+      { en: "Video Editor", ar: "محرر فيديو" },
+      { en: "Appointment Setter", ar: "مسؤول حجز المواعيد" },
+      { en: "Data & Admin Support", ar: "دعم بيانات وإدارة" },
+      { en: "Advanced Reporting", ar: "تقارير متقدمة" },
+    ],
+  },
+  {
+    name: {
+      en: "Elite + Human Agents",
+      ar: "النخبة + وكلاء بشريون",
+    },
+    badge: { en: "Scale Team", ar: "فريق التوسع" },
+    for: {
+      en: "Full coverage for teams scaling across roles and markets.",
+      ar: "تغطية كاملة للفرق المتوسعة عبر الأدوار والأسواق.",
+    },
+    price: 10000,
+    intro: {
+      en: "Everything in Pro + Human Agents, plus",
+      ar: "كل ما في الاحترافية + الوكلاء، بالإضافة إلى",
+    },
+    items: [
+      { en: "Higher Creative Capacity", ar: "سعة إبداعية أعلى" },
+      { en: "AI Agents", ar: "وكلاء ذكاء اصطناعي" },
+      { en: "Full 8-role coverage", ar: "تغطية كاملة لـ 8 أدوار" },
+      { en: "Advanced Automation", ar: "أتمتة متقدمة" },
+      { en: "Priority coordination", ar: "تنسيق بأولوية" },
     ],
   },
 ];
+
+function PricingCard({
+  plan,
+  money,
+  t,
+}: {
+  plan: PricingPlan;
+  money: (amount: number) => string;
+  t: (copy: Copy) => string;
+}) {
+  return (
+    <div
+      className={`relative flex flex-col rounded-3xl border p-7 ${plan.popular ? "border-transparent bg-ink text-ink-foreground" : "border-border bg-card"}`}
+    >
+      {plan.ribbon && (
+        <span className="absolute -top-3 start-7 rounded-full bg-accent-strong px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.16em] text-background">
+          {t({
+            en: "Most Popular",
+            ar: "الأكثر طلباً",
+          })}
+        </span>
+      )}
+      <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-accent-strong">
+        {t(plan.badge)}
+      </p>
+      <h3 className="mt-2 font-display text-xl font-bold tracking-tight">
+        {t(plan.name)}
+      </h3>
+      <p className="mt-3 text-sm opacity-65">{t(plan.for)}</p>
+      <p className="mt-5 font-display text-3xl font-bold tracking-tight">
+        {money(plan.price)}
+        <span className="text-sm font-medium opacity-50">
+          {t({
+            en: " / month",
+            ar: " / شهرياً",
+          })}
+        </span>
+      </p>
+      <CtaLink
+        variant={plan.popular ? "light" : "primary"}
+        className="mt-6 w-full"
+        href="#audit"
+      >
+        {t(CONSULTATION_CTA)}
+      </CtaLink>
+      <p className="mt-6 text-[0.65rem] font-bold uppercase tracking-[0.16em] opacity-45">
+        {t(plan.intro)}
+      </p>
+      <ul className="mt-3 grid flex-1 gap-2.5">
+        {plan.items.map((item) => (
+          <Bullet key={item.en}>{t(item)}</Bullet>
+        ))}
+      </ul>
+      {plan.note && (
+        <p className="mt-5 text-[0.78rem] opacity-55">{t(plan.note)}</p>
+      )}
+    </div>
+  );
+}
+
 function PricingSection() {
   let { t: e, money: t, country: n, setCountry: r } = useLocale();
   return (
@@ -3831,48 +3786,19 @@ function PricingSection() {
         ))}
       </div>
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
-        {PLANS.map((n) => (
-          <div
-            key={n.name.en}
-            className={`relative flex flex-col rounded-3xl border p-7 ${n.popular ? "border-transparent bg-ink text-ink-foreground" : "border-border bg-card"}`}
-          >
-            {n.popular && (
-              <span className="absolute -top-3 start-7 rounded-full bg-accent-strong px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.16em] text-background">
-                {e({
-                  en: "Most Popular",
-                  ar: "الأكثر طلباً",
-                })}
-              </span>
-            )}
-            <h3 className="font-display text-sm font-bold uppercase tracking-[0.18em] opacity-60">
-              {e(n.name)}
-            </h3>
-            <p className="mt-4 font-display text-3xl font-bold tracking-tight">
-              {t(n.price)}
-              <span className="text-sm font-medium opacity-50">
-                {e({
-                  en: " / month",
-                  ar: " / شهرياً",
-                })}
-              </span>
-            </p>
-            <p className="mt-3 text-sm opacity-60">{e(n.for)}</p>
-            <p className="mt-6 text-[0.65rem] font-bold uppercase tracking-[0.16em] opacity-45">
-              {e(n.intro)}
-            </p>
-            <ul className="mt-3 grid flex-1 gap-2.5">
-              {n.items.map((t) => (
-                <Bullet key={t.en}>{e(t)}</Bullet>
-              ))}
-            </ul>
-            <CtaLink
-              variant={n.popular ? "light" : "primary"}
-              className="mt-7 w-full"
-              href="#audit"
-            >
-              {e(n.cta)}
-            </CtaLink>
-          </div>
+        {SOFTWARE_PLANS.map((plan) => (
+          <PricingCard key={plan.name.en} plan={plan} money={t} t={e} />
+        ))}
+      </div>
+      <p className="mt-12 font-display text-xl font-bold tracking-tight md:text-2xl">
+        {e({
+          en: "Sales OS + Human Agents",
+          ar: "نظام المبيعات + وكلاء بشريون",
+        })}
+      </p>
+      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        {AGENT_PLANS.map((plan) => (
+          <PricingCard key={plan.name.en} plan={plan} money={t} t={e} />
         ))}
       </div>
       <p className="mt-6 max-w-2xl text-[0.78rem] leading-relaxed opacity-55">
