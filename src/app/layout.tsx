@@ -21,9 +21,9 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "AI Revenue OS — Managed Sales & WhatsApp System for UAE & Saudi",
+  title: "Spark AI Sales OS — Managed Sales & WhatsApp System for GCC Businesses",
   description:
-    "Connect your website, ads, WhatsApp, Instagram and sales team into one AI-powered revenue system that responds instantly, follows up automatically and books appointments. UAE & Saudi Arabia, English + Arabic.",
+    "Connect your website, ads, WhatsApp, Instagram and sales team into one AI-powered sales system that responds instantly, follows up automatically and books appointments. Built for GCC businesses, English + Arabic.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

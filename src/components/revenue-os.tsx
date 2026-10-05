@@ -11,8 +11,25 @@ import {
 import { twMerge } from "tailwind-merge";
 
 type Lang = "en" | "ar";
-type Country = "AE" | "SA";
+type Country = "AE" | "SA" | "KW" | "QA" | "BH" | "OM";
 type Copy = { en: string; ar: string };
+
+const GCC_MARKETS: {
+  code: Country;
+  flag: string;
+  short: string;
+  en: string;
+  ar: string;
+  currencyEn: string;
+  currencyAr: string;
+}[] = [
+  { code: "AE", flag: "🇦🇪", short: "UAE", en: "United Arab Emirates", ar: "الإمارات", currencyEn: "AED", currencyAr: "د.إ" },
+  { code: "SA", flag: "🇸🇦", short: "KSA", en: "Saudi Arabia", ar: "السعودية", currencyEn: "SAR", currencyAr: "ر.س" },
+  { code: "KW", flag: "🇰🇼", short: "KWT", en: "Kuwait", ar: "الكويت", currencyEn: "KWD", currencyAr: "د.ك" },
+  { code: "QA", flag: "🇶🇦", short: "QAT", en: "Qatar", ar: "قطر", currencyEn: "QAR", currencyAr: "ر.ق" },
+  { code: "BH", flag: "🇧🇭", short: "BHR", en: "Bahrain", ar: "البحرين", currencyEn: "BHD", currencyAr: "د.ب" },
+  { code: "OM", flag: "🇴🇲", short: "OMN", en: "Oman", ar: "عُمان", currencyEn: "OMR", currencyAr: "ر.ع" },
+];
 
 type Locale = {
   lang: Lang;
@@ -42,8 +59,8 @@ function LocaleProvider({ children }: { children: ReactNode }) {
   }, [lang]);
 
   const value = useMemo<Locale>(() => {
-    const currency =
-      country === "AE" ? (lang === "ar" ? "د.إ" : "AED") : lang === "ar" ? "ر.س" : "SAR";
+    const market = GCC_MARKETS.find((item) => item.code === country) ?? GCC_MARKETS[0];
+    const currency = lang === "ar" ? market.currencyAr : market.currencyEn;
     return {
       lang,
       country,
@@ -258,11 +275,13 @@ function SiteHeader() {
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${c ? "border-b border-border bg-background/85 backdrop-blur-xl" : "border-b border-transparent"}`}
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5 md:h-[4.5rem] md:px-10">
-        <a href="#top" className="flex items-center gap-2.5">
-          <span className="grid size-7 place-items-center rounded-md bg-foreground text-[0.6rem] font-bold text-background">
-            OS
-          </span>
-          <span className="font-display text-sm font-bold tracking-tight">
+        <a href="#top" className="flex shrink-0 items-center gap-3">
+          <img
+            src="/spark-ai-mark.jpg?v=9"
+            alt=""
+            className="size-10 rounded-[13px] object-cover shadow-sm ring-1 ring-black/10"
+          />
+          <span className="font-display text-[1.05rem] font-semibold tracking-tight text-foreground">
             Spark AI Sales OS
           </span>
         </a>
@@ -278,17 +297,20 @@ function SiteHeader() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <div className="hidden items-center rounded-full border border-border p-0.5 sm:flex">
-            {(["AE", "SA"] as const).map((countryCode) => (
-              <button
-                key={countryCode}
-                onClick={() => o(countryCode)}
-                className={`rounded-full px-2.5 py-1 text-[0.72rem] font-semibold transition-colors ${a === countryCode ? "bg-foreground text-background" : "opacity-60 hover:opacity-100"}`}
-              >
-                {countryCode === "AE" ? "🇦🇪 UAE" : "🇸🇦 KSA"}
-              </button>
-            ))}
-          </div>
+          <label className="hidden sm:block">
+            <span className="sr-only">Country</span>
+            <select
+              value={a}
+              onChange={(event) => o(event.target.value as Country)}
+              className="rounded-full border border-border bg-card px-3 py-1.5 text-[0.72rem] font-semibold outline-none"
+            >
+              {GCC_MARKETS.map((market) => (
+                <option key={market.code} value={market.code}>
+                  {market.flag} {market.short} · {market.currencyEn}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             onClick={() => n(t === "en" ? "ar" : "en")}
             className="rounded-full border border-border px-3 py-1.5 text-[0.72rem] font-semibold transition-colors hover:bg-accent"
@@ -327,17 +349,20 @@ function SiteHeader() {
               </a>
             ))}
           </div>
-          <div className="mt-3 flex gap-2">
-            {(["AE", "SA"] as const).map((countryCode) => (
-              <button
-                key={countryCode}
-                onClick={() => o(countryCode)}
-                className={`flex-1 rounded-full border border-border px-3 py-2 text-xs font-semibold ${a === countryCode ? "bg-foreground text-background" : ""}`}
-              >
-                {countryCode === "AE" ? "🇦🇪 UAE" : "🇸🇦 KSA"}
-              </button>
-            ))}
-          </div>
+          <label className="mt-3 block">
+            <span className="sr-only">Country</span>
+            <select
+              value={a}
+              onChange={(event) => o(event.target.value as Country)}
+              className="w-full rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold outline-none"
+            >
+              {GCC_MARKETS.map((market) => (
+                <option key={market.code} value={market.code}>
+                  {market.flag} {market.short} · {market.currencyEn}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       )}
     </header>
@@ -415,12 +440,12 @@ function FlowDiagram() {
       <div className="grid-lines pointer-events-none absolute inset-0 opacity-60" />
       <div className="relative grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4">
         <div>
-          <p className="mb-3 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          <h3 className="mb-4 font-display text-xl font-bold tracking-tight">
             {e({
               en: "Lead Sources",
               ar: "مصادر العملاء المحتملين",
             })}
-          </p>
+          </h3>
           <div className="grid grid-cols-2 gap-2">
             {LEAD_SOURCES.map((t, n) => (
               <div
@@ -445,7 +470,7 @@ function FlowDiagram() {
             <div className="absolute -inset-4 animate-pulse-soft rounded-full bg-accent-strong/25 blur-2xl" />
             <div className="relative rounded-2xl bg-ink px-6 py-5 text-center text-ink-foreground">
               <p className="font-display text-sm font-bold leading-tight">
-                AI REVENUE OS
+                SALES OS
               </p>
               <p className="mt-1 text-[0.6rem] uppercase tracking-[0.18em] opacity-60">
                 {e({
@@ -497,8 +522,8 @@ function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-6 inline-flex rounded-full border border-border bg-card px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             {e({
-              en: "For UAE & Saudi Businesses",
-              ar: "لشركات الإمارات والسعودية",
+              en: "For GCC Businesses",
+              ar: "لشركات دول الخليج",
             })}
           </p>
           <h1 className="font-display text-[2.4rem] font-bold leading-[1.03] tracking-[-0.035em] md:text-[4.2rem]">
@@ -529,8 +554,8 @@ function Hero() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <CtaLink href="#product">
               {e({
-                en: "See AI Revenue OS In Action",
-                ar: "شاهد النظام أثناء العمل",
+                en: "See Sales OS in Action",
+                ar: "شاهد نظام المبيعات أثناء العمل",
               })}
             </CtaLink>
             <CtaLink href="#audit" variant="ghost">
@@ -555,8 +580,8 @@ function Hero() {
                 ar: "العربية والإنجليزية",
               },
               {
-                en: "Built for UAE & Saudi businesses",
-                ar: "مصمم للشركات في السعودية والإمارات",
+                en: "Built for GCC Businesses",
+                ar: "مصمم لشركات الخليج",
               },
             ].map((t) => (
               <span key={t.en}>✓ {e(t)}</span>
@@ -727,33 +752,36 @@ function ProblemSection() {
           ar: "أنت تدفع بالفعل لجذب الانتباه. لكن ماذا يحدث بعد أن ينقر العميل؟",
         })}
       </SectionText>
-      <div className="mt-10 grid gap-2 md:grid-cols-2">
+      <div className="mt-10 grid gap-3 md:grid-cols-2">
         {BROKEN_JOURNEY.map((t) => (
           <div
             key={t.a.en}
-            className="flex items-center justify-between gap-4 rounded-xl border border-dashed border-foreground/20 bg-background/60 px-4 py-3 text-sm"
+            className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-4 text-sm shadow-[0_12px_30px_-24px_rgba(0,0,0,0.45)]"
           >
-            <span className="font-semibold">{e(t.a)}</span>
-            <span className="text-xs opacity-40">→</span>
-            <span className="opacity-55">{e(t.b)}</span>
+            <span className="rounded-full bg-sand px-3 py-1.5 text-[0.75rem] font-semibold">
+              {e(t.a)}
+            </span>
+            <span className="text-accent-strong">→</span>
+            <span className="opacity-60">{e(t.b)}</span>
           </div>
         ))}
       </div>
-      <p className="mt-8 font-display text-xl font-bold leading-snug tracking-tight md:text-3xl">
+      <h3 className="mt-12 max-w-3xl font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
         {e({
           en: "Your customer journey is scattered across tools, tabs, inboxes and people.",
           ar: "رحلة عميلك موزعة بين أدوات ونوافذ وصناديق بريد وأشخاص.",
         })}
-      </p>
-      <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {$e.map((t) => (
-          <Card key={t.t.en}>
-            <h3 className="font-display text-base font-bold tracking-tight">
+      </h3>
+      <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {$e.map((t, index) => (
+          <Card key={t.t.en} className="relative overflow-hidden">
+            <span className="mb-4 grid size-9 place-items-center rounded-xl bg-sand font-display text-sm font-bold text-accent-strong">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className="font-display text-lg font-bold tracking-tight">
               {e(t.t)}
             </h3>
-            <p className="mt-2.5 text-sm leading-relaxed opacity-65">
-              {e(t.b)}
-            </p>
+            <p className="mt-2.5 text-sm leading-relaxed opacity-65">{e(t.b)}</p>
           </Card>
         ))}
       </div>
@@ -814,7 +842,7 @@ function ProductSection() {
           ar: "نقدّم لكم",
         })}
       </Eyebrow>
-      <SectionHeading>AI Revenue OS</SectionHeading>
+      <SectionHeading>Sales OS</SectionHeading>
       <p className="mt-4 font-display text-xl font-semibold tracking-tight opacity-70 md:text-2xl">
         {e({
           en: "One connected system between your marketing and your revenue.",
@@ -2058,7 +2086,7 @@ function ReactivationSection() {
           </ul>
           <p className="mt-6 text-sm leading-relaxed opacity-65">
             {e({
-              en: "Instead of constantly paying for new leads, AI Revenue OS helps reactivate the opportunities you already paid to acquire.",
+              en: "Instead of constantly paying for new leads, Sales OS helps reactivate the opportunities you already paid to acquire.",
               ar: "بدلاً من الدفع المستمر لعملاء جدد، يساعدك النظام على إعادة تنشيط الفرص التي دفعت ثمنها بالفعل.",
             })}
           </p>
@@ -2654,20 +2682,20 @@ function ValueSection() {
           ar: "كل ما يلزم لبناء البنية التحتية لإيراداتك",
         })}
       </SectionHeading>
-      <div className="mt-10 grid gap-2">
+      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {VALUE_ITEMS.map((n) => (
           <div
             key={n.t.en}
-            className="flex items-center justify-between gap-4 rounded-xl border border-foreground/10 bg-background px-5 py-3.5"
+            className="rounded-2xl border border-foreground/10 bg-background px-4 py-4"
           >
-            <span className="text-sm font-semibold">{e(n.t)}</span>
-            <span className="text-sm opacity-55">
+            <p className="text-sm font-semibold leading-snug">{e(n.t)}</p>
+            <p className="mt-1.5 text-xs opacity-55">
               {t(n.v)}
               {e({
                 en: "/month value",
                 ar: " قيمة شهرية",
               })}
-            </span>
+            </p>
           </div>
         ))}
       </div>
@@ -2925,14 +2953,14 @@ function ManagedSection() {
     <Section tone="dark">
       <SectionHeading className="max-w-3xl">
         {e({
-          en: "We Don't Give You Software And Wish You Good Luck.",
-          ar: "نحن لا نسلّمك برنامجاً ونتمنى لك التوفيق.",
+          en: "We Don’t Get Paid for Activity.",
+          ar: "لا نتقاضى أجراً على النشاط.",
         })}
         <br />
         <span className="opacity-50">
           {e({
-            en: "We Build It. Connect It. Automate It. And Manage It.",
-            ar: "نبنيه، نربطه، نؤتمته، وندير تشغيله.",
+            en: "We Get Paid for Outcomes.",
+            ar: "نتقاضى أجراً على النتائج.",
           })}
         </span>
       </SectionHeading>
@@ -3117,6 +3145,121 @@ function WeeksSection() {
     </Section>
   );
 }
+function IndustryIcon({ name }: { name: string }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.7,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: "size-5",
+    "aria-hidden": true,
+  };
+  if (name === "Real Estate") {
+    return (
+      <svg {...common}>
+        <path d="M4 20V9l8-5 8 5v11" />
+        <path d="M9 20v-6h6v6" />
+      </svg>
+    );
+  }
+  if (name === "Clinics & Healthcare") {
+    return (
+      <svg {...common}>
+        <path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.6-7 10-7 10z" />
+      </svg>
+    );
+  }
+  if (name === "Education") {
+    return (
+      <svg {...common}>
+        <path d="M3 8 12 4l9 4-9 4-9-4z" />
+        <path d="M7 10.5V16c1.6 1.2 3.3 1.8 5 1.8s3.4-.6 5-1.8v-5.5" />
+      </svg>
+    );
+  }
+  if (name === "Professional Services") {
+    return (
+      <svg {...common}>
+        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+        <path d="M4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" />
+      </svg>
+    );
+  }
+  if (name === "Automotive") {
+    return (
+      <svg {...common}>
+        <path d="M4 15h16l-1.4-4.2A2 2 0 0 0 16.7 9H7.3a2 2 0 0 0-1.9 1.8L4 15z" />
+        <path d="M6 15v2M18 15v2" />
+        <circle cx="7.5" cy="16.5" r="1.2" />
+        <circle cx="16.5" cy="16.5" r="1.2" />
+      </svg>
+    );
+  }
+  if (name === "Home Services") {
+    return (
+      <svg {...common}>
+        <path d="M4 11 12 4l8 7" />
+        <path d="M6 10.5V20h12v-9.5" />
+      </svg>
+    );
+  }
+  if (name === "Hospitality") {
+    return (
+      <svg {...common}>
+        <path d="M4 18V9a2 2 0 0 1 2-2h7v11" />
+        <path d="M13 11h5a2 2 0 0 1 2 2v5" />
+        <path d="M4 18h16" />
+      </svg>
+    );
+  }
+  if (name === "Travel & Tourism") {
+    return (
+      <svg {...common}>
+        <path d="M3 12h18" />
+        <path d="M12 3a14 14 0 0 1 0 18" />
+        <path d="M12 3a14 14 0 0 0 0 18" />
+        <circle cx="12" cy="12" r="9" />
+      </svg>
+    );
+  }
+  if (name === "Consultancies") {
+    return (
+      <svg {...common}>
+        <path d="M8 18v-1a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4v1" />
+        <circle cx="12" cy="8" r="3" />
+        <path d="M5 19h14" />
+      </svg>
+    );
+  }
+  if (name === "Recruitment") {
+    return (
+      <svg {...common}>
+        <circle cx="8" cy="9" r="2.5" />
+        <circle cx="16" cy="9" r="2.5" />
+        <path d="M4 18a4 4 0 0 1 8 0" />
+        <path d="M12 18a4 4 0 0 1 8 0" />
+      </svg>
+    );
+  }
+  if (name === "B2B Services") {
+    return (
+      <svg {...common}>
+        <path d="M4 20V8h6V4h4v4h6v12" />
+        <path d="M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01" />
+      </svg>
+    );
+  }
+  return (
+    <svg {...common}>
+      <path d="M6 14c1.5-3 3-4 6-4s4.5 1 6 4" />
+      <path d="M8 18c1-2 2.2-3 4-3s3 1 4 3" />
+      <circle cx="12" cy="7" r="2" />
+    </svg>
+  );
+}
+
 const INDUSTRIES = [
   {
     en: "Real Estate",
@@ -3173,14 +3316,14 @@ function SolutionsSection() {
     <Section id="solutions">
       <Eyebrow>
         {e({
-          en: "Solutions",
+          en: "Industries",
           ar: "القطاعات",
         })}
       </Eyebrow>
       <SectionHeading>
         {e({
-          en: "Built For Businesses Where Every Lead Matters.",
-          ar: "مصمم للشركات التي يهمها كل عميل محتمل.",
+          en: "Industries We Serve — Where Every Lead Matters",
+          ar: "القطاعات التي نخدمها — حيث يهم كل عميل محتمل",
         })}
       </SectionHeading>
       <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -3188,8 +3331,11 @@ function SolutionsSection() {
           <a
             key={t.en}
             href="#audit"
-            className="group rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-foreground/25"
+            className="group rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-[0_16px_40px_-28px_rgba(0,0,0,0.55)]"
           >
+            <span className="mb-4 grid size-10 place-items-center rounded-xl bg-sand text-foreground">
+              <IndustryIcon name={t.en} />
+            </span>
             <h3 className="font-display text-sm font-bold tracking-tight">
               {e(t)}
             </h3>
@@ -3202,14 +3348,8 @@ function SolutionsSection() {
           </a>
         ))}
       </div>
-      <div className="mt-12 rounded-2xl bg-sand p-8">
-        <p className="font-display text-xl font-bold tracking-tight md:text-2xl">
-          {e({
-            en: "“Your ads generate the lead. We automate what happens next.”",
-            ar: "«إعلاناتك تجلب العميل. ونحن نؤتمت ما يحدث بعد ذلك.»",
-          })}
-        </p>
-        <CtaLink className="mt-6">
+      <div className="mt-12">
+        <CtaLink>
           {e({
             en: "Book Free Revenue Audit",
             ar: "احجز تدقيق الإيرادات المجاني",
@@ -3376,6 +3516,34 @@ function GuaranteeSection() {
 const PLANS = [
   {
     name: {
+      en: "Foundation",
+      ar: "التأسيس",
+    },
+    price: 1500,
+    for: {
+      en: "For owners who need every enquiry captured in one place.",
+      ar: "لأصحاب الأعمال الذين يريدون جمع كل استفسار في مكان واحد.",
+    },
+    cta: {
+      en: "Start With Foundation",
+      ar: "ابدأ بباقة التأسيس",
+    },
+    popular: false,
+    intro: {
+      en: "Includes",
+      ar: "تشمل",
+    },
+    items: [
+      { en: "Lead capture", ar: "التقاط العملاء" },
+      { en: "Forms", ar: "النماذج" },
+      { en: "WhatsApp inbox", ar: "صندوق واتساب" },
+      { en: "Basic pipeline", ar: "مسار أساسي" },
+      { en: "Email follow-up", ar: "متابعة بالبريد" },
+      { en: "Technical support", ar: "دعم تقني" },
+    ],
+  },
+  {
+    name: {
       en: "Starter",
       ar: "الأساسية",
     },
@@ -3512,6 +3680,32 @@ const PLANS = [
   },
   {
     name: {
+      en: "Professional",
+      ar: "الاحترافية",
+    },
+    price: 4500,
+    for: {
+      en: "For growing teams that need tighter sales control.",
+      ar: "للفرق النامية التي تحتاج ضبطاً أدق للمبيعات.",
+    },
+    cta: {
+      en: "Build The Professional System",
+      ar: "ابنِ النظام الاحترافي",
+    },
+    popular: false,
+    intro: {
+      en: "Everything in Growth, plus",
+      ar: "كل ما في النمو، بالإضافة إلى",
+    },
+    items: [
+      { en: "Multiple pipelines", ar: "مسارات متعددة" },
+      { en: "Advanced integrations", ar: "تكاملات متقدمة" },
+      { en: "Custom dashboards", ar: "لوحات مخصصة" },
+      { en: "Priority support", ar: "دعم بأولوية" },
+    ],
+  },
+  {
+    name: {
       en: "Scale",
       ar: "التوسع",
     },
@@ -3526,8 +3720,8 @@ const PLANS = [
     },
     popular: false,
     intro: {
-      en: "Everything in Growth, plus",
-      ar: "كل ما في النمو، بالإضافة إلى",
+      en: "Everything in Professional, plus",
+      ar: "كل ما في الاحترافية، بالإضافة إلى",
     },
     items: [
       {
@@ -3576,6 +3770,33 @@ const PLANS = [
       },
     ],
   },
+  {
+    name: {
+      en: "Enterprise",
+      ar: "المؤسسات",
+    },
+    price: 7500,
+    for: {
+      en: "For multi-branch GCC businesses that need one operating system.",
+      ar: "للشركات متعددة الفروع في الخليج التي تحتاج نظام تشغيل واحد.",
+    },
+    cta: {
+      en: "Talk To A Revenue Architect",
+      ar: "تحدث مع مهندس إيرادات",
+    },
+    popular: false,
+    intro: {
+      en: "Everything in Scale, plus",
+      ar: "كل ما في التوسع، بالإضافة إلى",
+    },
+    items: [
+      { en: "GCC multi-country rollout", ar: "إطلاق متعدد في دول الخليج" },
+      { en: "Custom AI agents", ar: "وكلاء ذكاء مخصصون" },
+      { en: "Executive reporting", ar: "تقارير للإدارة" },
+      { en: "Dedicated success team", ar: "فريق نجاح مخصص" },
+      { en: "Priority SLA support", ar: "دعم باتفاقية مستوى خدمة" },
+    ],
+  },
 ];
 function PricingSection() {
   let { t: e, money: t, country: n, setCountry: r } = useLocale();
@@ -3594,24 +3815,18 @@ function PricingSection() {
           })}
         </span>
       </SectionHeading>
-      <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1">
-        {(["AE", "SA"] as const).map((countryCode) => (
+      <div className="mt-8 flex flex-wrap gap-2">
+        {GCC_MARKETS.map((market) => (
           <button
-            key={countryCode}
-            onClick={() => r(countryCode)}
-            className={`rounded-full px-4 py-2 text-[0.78rem] font-semibold transition-colors ${n === countryCode ? "bg-foreground text-background" : "opacity-60 hover:opacity-100"}`}
+            key={market.code}
+            onClick={() => r(market.code)}
+            className={`rounded-full border px-4 py-2 text-[0.78rem] font-semibold transition-colors ${n === market.code ? "border-transparent bg-foreground text-background" : "border-border bg-card opacity-70 hover:opacity-100"}`}
           >
-            {e(
-              countryCode === "AE"
-                ? {
-                    en: "🇦🇪 UAE · AED",
-                    ar: "🇦🇪 الإمارات · درهم",
-                  }
-                : {
-                    en: "🇸🇦 Saudi · SAR",
-                    ar: "🇸🇦 السعودية · ريال",
-                  },
-            )}
+            {market.flag}{" "}
+            {e({
+              en: `${market.short} · ${market.currencyEn}`,
+              ar: `${market.ar} · ${market.currencyAr}`,
+            })}
           </button>
         ))}
       </div>
@@ -3918,16 +4133,6 @@ function CalculatorSection() {
 const FAQS = [
   {
     q: {
-      en: "Is this GoHighLevel?",
-      ar: "هل هذا نظام GoHighLevel؟",
-    },
-    a: {
-      en: "We build on proven CRM, automation and AI technology — including GoHighLevel and complementary tools — but what you buy is a managed revenue system configured, automated and operated for your business, not a software licence.",
-      ar: "نبني على تقنيات موثوقة لإدارة العملاء والأتمتة والذكاء الاصطناعي — من ضمنها GoHighLevel وأدوات مكمّلة — لكن ما تحصل عليه هو نظام إيرادات مُدار ومُهيأ ومُشغّل لعملك، وليس مجرد ترخيص برنامج.",
-    },
-  },
-  {
-    q: {
       en: "Can I keep my existing website?",
       ar: "هل يمكنني الاحتفاظ بموقعي الحالي؟",
     },
@@ -4213,9 +4418,10 @@ function AuditSection() {
                 {
                   n: "name",
                   l: {
-                    en: "Full name",
+                    en: "Full Name",
                     ar: "الاسم الكامل",
                   },
+                  required: true,
                 },
                 {
                   n: "company",
@@ -4223,21 +4429,24 @@ function AuditSection() {
                     en: "Company",
                     ar: "الشركة",
                   },
+                  required: true,
                 },
                 {
                   n: "email",
                   l: {
-                    en: "Work email",
+                    en: "Email",
                     ar: "البريد الإلكتروني",
                   },
                   type: "email",
+                  required: true,
                 },
                 {
                   n: "phone",
                   l: {
-                    en: "WhatsApp number",
+                    en: "WhatsApp Number",
                     ar: "رقم واتساب",
                   },
+                  required: true,
                 },
                 {
                   n: "industry",
@@ -4252,7 +4461,8 @@ function AuditSection() {
                     en: "Country",
                     ar: "الدولة",
                   },
-                  opts: ["United Arab Emirates", "Saudi Arabia"],
+                  opts: GCC_MARKETS.map((market) => market.en),
+                  required: true,
                 },
                 {
                   n: "leads",
@@ -4297,12 +4507,21 @@ function AuditSection() {
                   },
                 },
                 {
-                  n: "team",
+                  n: "leadCount",
                   l: {
-                    en: "Number of salespeople",
-                    ar: "عدد مندوبي المبيعات",
+                    en: "Monthly Lead Count",
+                    ar: "عدد العملاء الشهري",
                   },
-                  type: "number",
+                  opts: [
+                    "0–10",
+                    "10–20",
+                    "20–50",
+                    "50–100",
+                    "100–250",
+                    "250–500",
+                    "500–1000",
+                    "1000+",
+                  ],
                 },
                 {
                   n: "value",
@@ -4327,12 +4546,12 @@ function AuditSection() {
                   {n.opts ? (
                     <select
                       name={n.n}
+                      required={n.required}
                       defaultValue={
                         n.n === "country"
-                          ? t === "AE"
-                            ? "United Arab Emirates"
-                            : "Saudi Arabia"
-                          : void 0
+                          ? (GCC_MARKETS.find((market) => market.code === t)?.en ??
+                            "United Arab Emirates")
+                          : undefined
                       }
                       className="rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal outline-none focus:border-foreground"
                     >
@@ -4344,7 +4563,7 @@ function AuditSection() {
                     <input
                       name={n.n}
                       type={n.type ?? "text"}
-                      required={["name", "email", "phone"].includes(n.n)}
+                      required={n.required}
                       className="rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal outline-none focus:border-foreground"
                     />
                   )}
@@ -4415,11 +4634,11 @@ function SiteFooter() {
   return (
     <footer className="border-t border-border px-5 py-10 md:px-10">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 text-[0.78rem] opacity-55">
-        <p>© {new Date().getFullYear()} AI Revenue OS</p>
+        <p>© {new Date().getFullYear()} Spark AI</p>
         <p>
           {e({
-            en: "AI Revenue Infrastructure for UAE & Saudi Businesses.",
-            ar: "بنية إيرادات ذكية لشركات الإمارات والسعودية.",
+            en: "Sales OS for GCC Businesses.",
+            ar: "نظام مبيعات لشركات الخليج.",
           })}
         </p>
       </div>
@@ -4523,18 +4742,11 @@ function RevenueOS() {
           <AutomationsSection />
           <PlatformSection />
           <ValueSection />
-          <ComparisonSection />
           <ManagedSection />
-          <WeeksSection />
           <SolutionsSection />
           <PricingSection />
-          <AddonsSection />
-          <CalculatorSection />
-          <AgencySection />
-          <GuaranteeSection />
           <FaqSection />
           <AuditSection />
-          <ClosingSection />
           <SiteFooter />
         </main>
         <FloatingActions />
