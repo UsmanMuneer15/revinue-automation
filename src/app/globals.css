@@ -11,7 +11,7 @@
   --whatsapp: oklch(68% 0.15 152);
   --card: oklch(99.7% 0.003 85);
   --muted: oklch(95.5% 0.01 82);
-  --muted-foreground: oklch(50% 0.014 70);
+  --muted-foreground: oklch(36% 0.016 70);
   --accent: oklch(93% 0.024 78);
   --accent-foreground: oklch(24% 0.02 60);
   --border: oklch(89.5% 0.014 80);
@@ -95,4 +95,8 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.grid > * {
+  min-width: 0;
 }

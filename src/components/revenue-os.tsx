@@ -4,7 +4,9 @@ import {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -106,7 +108,7 @@ function Section({
     <section
       id={id}
       className={cn(
-        "w-full px-5 py-20 md:px-10 md:py-28",
+        "w-full overflow-x-clip px-5 py-20 md:px-10 md:py-28",
         tone === "dark" && "bg-ink text-ink-foreground",
         tone === "sand" && "bg-sand text-foreground",
         className,
@@ -119,7 +121,7 @@ function Section({
 
 function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+    <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
       {children}
     </p>
   );
@@ -128,19 +130,83 @@ function Eyebrow({ children }: { children: ReactNode }) {
 function SectionHeading({
   children,
   className,
+  as: Tag = "h2",
 }: {
   children: ReactNode;
   className?: string;
+  as?: "h2" | "h3";
 }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let running = false;
+    let queued = false;
+    const fit = () => {
+      if (running) {
+        queued = true;
+        return;
+      }
+      running = true;
+      const max = 42;
+      const floor = 15;
+      const lines = el.querySelectorAll<HTMLElement>(".line");
+      const section = el.closest("section");
+      const pad = section ? getComputedStyle(section) : null;
+      const sectionWidth = section
+        ? section.clientWidth -
+          parseFloat(pad?.paddingLeft || "0") -
+          parseFloat(pad?.paddingRight || "0")
+        : 0;
+      const parentWidth = el.parentElement?.clientWidth ?? 0;
+      const available = Math.min(
+        ...[sectionWidth, parentWidth, 1152].filter((n) => n > 0),
+      );
+      el.style.whiteSpace = "nowrap";
+      lines.forEach((node) => {
+        node.style.whiteSpace = "nowrap";
+      });
+      el.style.fontSize = `${max}px`;
+      const widest = el.scrollWidth;
+      const fitted =
+        !available || widest <= available + 1
+          ? max
+          : ((max * available) / widest) * 0.98;
+      if (fitted < floor) {
+        el.style.fontSize = `${floor}px`;
+        el.style.whiteSpace = "normal";
+        lines.forEach((node) => {
+          node.style.whiteSpace = "normal";
+        });
+      } else {
+        el.style.fontSize = `${fitted}px`;
+        el.style.whiteSpace = "nowrap";
+        lines.forEach((node) => {
+          node.style.whiteSpace = "nowrap";
+        });
+      }
+      running = false;
+      if (queued) {
+        queued = false;
+        fit();
+      }
+    };
+    fit();
+    const parent = el.parentElement;
+    const ro = new ResizeObserver(fit);
+    if (parent) ro.observe(parent);
+    return () => ro.disconnect();
+  });
   return (
-    <h2
+    <Tag
+      ref={ref}
       className={cn(
-        "font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl",
+        "w-full font-display font-bold leading-[1.16] tracking-[-0.03em] whitespace-nowrap [&_.line]:block [&_.line]:whitespace-nowrap",
         className,
       )}
     >
       {children}
-    </h2>
+    </Tag>
   );
 }
 
@@ -154,7 +220,7 @@ function SectionText({
   return (
     <p
       className={cn(
-        "mt-5 max-w-2xl text-base leading-relaxed opacity-70 md:text-lg",
+        "mt-5 max-w-3xl text-base leading-relaxed opacity-90 md:text-lg",
         className,
       )}
     >
@@ -470,9 +536,9 @@ function FlowDiagram() {
             <div className="absolute -inset-4 animate-pulse-soft rounded-full bg-accent-strong/25 blur-2xl" />
             <div className="relative rounded-2xl bg-ink px-6 py-5 text-center text-ink-foreground">
               <p className="font-display text-sm font-bold leading-tight">
-                SALES OS
+                Sales OS
               </p>
-              <p className="mt-1 text-[0.6rem] uppercase tracking-[0.18em] opacity-60">
+              <p className="mt-1 text-[0.6rem] tracking-wide opacity-60">
                 {e({
                   en: "Managed",
                   ar: "مُدار بالكامل",
@@ -502,7 +568,7 @@ function FlowDiagram() {
           ))}
         </div>
       </div>
-      <p className="relative mt-6 border-t border-border pt-5 text-center text-[0.8rem] opacity-65">
+      <p className="relative mt-6 border-t border-border pt-5 text-center text-[0.8rem] opacity-85">
         {e({
           en: "From first click to closed customer — without leads disappearing between tools.",
           ar: "من أول نقرة حتى إتمام الصفقة — دون أن يضيع أي عميل محتمل بين الأدوات.",
@@ -520,7 +586,7 @@ function Hero() {
     >
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-6 inline-flex rounded-full border border-border bg-card px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="mb-6 inline-flex rounded-full border border-border bg-card px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-foreground/80">
             {e({
               en: "For GCC Businesses",
               ar: "لشركات دول الخليج",
@@ -532,14 +598,14 @@ function Hero() {
               ar: "العملاء المحتملون يصلون إليك بالفعل.",
             })}
             <br />
-            <span className="opacity-45">
+            <span className="text-foreground/75">
               {e({
                 en: "Your Follow-Up System Is Letting Them Down.",
                 ar: "لكن نظام المتابعة لديك لا يستفيد منهم بالشكل الكافي.",
               })}
             </span>
           </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed opacity-70 md:text-lg">
+          <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">
             {e({
               en: "Connect your website, ads, WhatsApp, Instagram, forms and sales team into one AI-powered revenue system that responds to leads, follows up automatically, books appointments and shows you exactly what's happening across your pipeline.",
               ar: "اربط موقعك الإلكتروني، إعلاناتك، واتساب، إنستغرام وفريق المبيعات في نظام واحد مدعوم بالذكاء الاصطناعي — للرد على العملاء، متابعتهم، تأهيلهم وحجز المواعيد تلقائياً.",
@@ -565,7 +631,7 @@ function Hero() {
               })}
             </CtaLink>
           </div>
-          <div className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.78rem] opacity-65">
+          <div className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.78rem] text-foreground/85">
             {[
               {
                 en: "Fully managed",
@@ -587,9 +653,6 @@ function Hero() {
               <span key={t.en}>✓ {e(t)}</span>
             ))}
           </div>
-        </div>
-        <div className="mt-14 animate-rise">
-          <FlowDiagram />
         </div>
       </div>
     </section>
@@ -733,13 +796,14 @@ function ProblemSection() {
   let { t: e } = useLocale();
   return (
     <Section tone="sand">
-      <SectionHeading className="max-w-3xl">
-        {e({
-          en: "Most Businesses Don't Have a Lead Problem.",
-          ar: "معظم الشركات لا تعاني من نقص العملاء المحتملين.",
-        })}
-        <br />
-        <span className="opacity-45">
+      <SectionHeading>
+        <span className="line">
+          {e({
+            en: "Most Businesses Don't Have a Lead Problem.",
+            ar: "معظم الشركات لا تعاني من نقص العملاء المحتملين.",
+          })}
+        </span>
+        <span className="line text-foreground/75">
           {e({
             en: "They Have a Revenue Infrastructure Problem.",
             ar: "بل من ضعف البنية التحتية للإيرادات.",
@@ -762,16 +826,16 @@ function ProblemSection() {
               {e(t.a)}
             </span>
             <span className="text-accent-strong">→</span>
-            <span className="opacity-60">{e(t.b)}</span>
+            <span className="text-foreground/80">{e(t.b)}</span>
           </div>
         ))}
       </div>
-      <h3 className="mt-12 max-w-3xl font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
+      <SectionHeading as="h3" className="mt-12">
         {e({
           en: "Your customer journey is scattered across tools, tabs, inboxes and people.",
           ar: "رحلة عميلك موزعة بين أدوات ونوافذ وصناديق بريد وأشخاص.",
         })}
-      </h3>
+      </SectionHeading>
       <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {$e.map((t, index) => (
           <Card key={t.t.en} className="relative overflow-hidden">
@@ -781,7 +845,7 @@ function ProblemSection() {
             <h3 className="font-display text-lg font-bold tracking-tight">
               {e(t.t)}
             </h3>
-            <p className="mt-2.5 text-sm leading-relaxed opacity-65">{e(t.b)}</p>
+            <p className="mt-2.5 text-sm leading-relaxed text-foreground/85">{e(t.b)}</p>
           </Card>
         ))}
       </div>
@@ -843,7 +907,7 @@ function ProductSection() {
         })}
       </Eyebrow>
       <SectionHeading>Sales OS</SectionHeading>
-      <p className="mt-4 font-display text-xl font-semibold tracking-tight opacity-70 md:text-2xl">
+      <p className="mt-4 font-display text-xl font-semibold tracking-tight opacity-90 md:text-2xl">
         {e({
           en: "One connected system between your marketing and your revenue.",
           ar: "نظام واحد يربط بين تسويقك وإيراداتك.",
@@ -926,7 +990,7 @@ function CaptureSection() {
               ar: "٠١. التقط كل فرصة",
             })}
           </SectionHeading>
-          <p className="mt-5 text-sm leading-relaxed opacity-70">
+          <p className="mt-5 text-sm leading-relaxed opacity-90">
             {e({
               en: "No downloading spreadsheets. No forwarding leads manually. No checking five different inboxes. Every enquiry enters one customer record and one revenue pipeline automatically.",
               ar: "لا تحميل لملفات إكسل، ولا تحويل يدوي للعملاء، ولا تفقّد لخمسة صناديق بريد. كل استفسار يدخل تلقائياً إلى سجل عميل واحد ومسار إيرادات واحد.",
@@ -956,7 +1020,7 @@ function CaptureSection() {
             ))}
           </div>
           <div className="mt-6 rounded-2xl bg-ink p-5 text-ink-foreground">
-            <p className="text-[0.6rem] uppercase tracking-[0.18em] opacity-55">
+            <p className="text-[0.6rem] uppercase tracking-[0.18em] opacity-80">
               {e({
                 en: "Unified customer record",
                 ar: "سجل عميل موحّد",
@@ -965,7 +1029,7 @@ function CaptureSection() {
             <p className="mt-2 font-display text-lg font-bold">
               Sarah Al Mansouri
             </p>
-            <div className="mt-3 grid grid-cols-2 gap-2 text-[0.68rem] opacity-70">
+            <div className="mt-3 grid grid-cols-2 gap-2 text-[0.68rem] opacity-90">
               <span>
                 {e({
                   en: "Source: Meta Ads",
@@ -1059,7 +1123,7 @@ function RespondSection() {
                 ar: "أهلاً سارة 👋 شكراً لتواصلك — أقدر أساعدك الآن. تحبين نحجز موعد زيارة هذا الأسبوع؟",
               })}
             </p>
-            <p className="mt-3 text-[0.65rem] font-semibold opacity-55">
+            <p className="mt-3 text-[0.65rem] font-semibold opacity-85">
               00:05
             </p>
           </div>
@@ -1077,7 +1141,7 @@ function RespondSection() {
               ar: "٠٢. رُدّ عليهم وهم ما زالوا مهتمين",
             })}
           </SectionHeading>
-          <p className="mt-5 text-sm leading-relaxed opacity-70">
+          <p className="mt-5 text-sm leading-relaxed opacity-90">
             {e({
               en: "Your AI Sales Agent can immediately engage incoming leads through WhatsApp, SMS, web chat or other connected channels.",
               ar: "يتفاعل وكيل المبيعات الذكي فوراً مع العملاء الجدد عبر واتساب والرسائل النصية والدردشة وأي قناة أخرى مرتبطة.",
@@ -1186,7 +1250,7 @@ function WhatsAppSection() {
   return (
     <Section tone="dark">
       <Eyebrow>
-        <span className="text-ink-foreground/55">
+        <span className="text-ink-foreground/85">
           {e({
             en: "Built for how the GCC actually communicates",
             ar: "مصمم لطريقة التواصل الفعلية في الخليج",
@@ -1199,7 +1263,7 @@ function WhatsAppSection() {
           ar: "حوّل واتساب إلى قناة إيرادات",
         })}
       </SectionHeading>
-      <SectionText className="opacity-60">
+      <SectionText>
         {e({
           en: "Not just another WhatsApp inbox. We build an automated customer journey around it.",
           ar: "ليس مجرد صندوق وارد آخر لواتساب، بل رحلة عميل مؤتمتة بالكامل حوله.",
@@ -1212,7 +1276,7 @@ function WhatsAppSection() {
             <h3 className="font-display text-sm font-bold tracking-tight">
               {e(t.t)}
             </h3>
-            <p className="mt-2 text-[0.82rem] leading-relaxed opacity-60">
+            <p className="mt-2 text-[0.82rem] leading-relaxed opacity-90">
               {e(t.b)}
             </p>
           </Card>
@@ -1278,7 +1342,7 @@ function FollowUpSection() {
   let { t: e } = useLocale();
   return (
     <Section>
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "03. Because Most Leads Don't Buy Today.",
           ar: "٠٣. لأن معظم العملاء لا يشترون اليوم.",
@@ -1417,7 +1481,7 @@ function AgentSection() {
   let { t: e } = useLocale();
   return (
     <Section tone="sand">
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "Meet the Sales Agent That Never Forgets a Lead",
           ar: "تعرّف على وكيل المبيعات الذي لا ينسى أي عميل",
@@ -1440,7 +1504,7 @@ function AgentSection() {
           </ul>
         </div>
         <div className="rounded-2xl border border-foreground/15 bg-ink p-7 text-ink-foreground">
-          <p className="text-[0.62rem] font-bold uppercase tracking-[0.18em] opacity-60">
+          <p className="text-[0.62rem] font-bold uppercase tracking-[0.18em] opacity-80">
             {e({
               en: "Your salespeople handle",
               ar: "فريق المبيعات يتولى",
@@ -1597,7 +1661,7 @@ function InboxSection() {
                 key={String(n)}
                 className="flex justify-between gap-4 border-b border-border pb-2"
               >
-                <span className="opacity-50">{e(t as Copy)}</span>
+                <span className="opacity-85">{e(t as Copy)}</span>
                 <span className="font-medium">{String(n)}</span>
               </div>
             ))}
@@ -1673,19 +1737,19 @@ function PipelineSection() {
             key={r.en}
             className="min-w-[9rem] rounded-xl border border-foreground/10 bg-background p-3"
           >
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] opacity-50">
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] opacity-80">
               {e(r)}
             </p>
             <div
               className={`mt-3 rounded-lg border p-2.5 text-[0.7rem] transition-all duration-500 ${n === a ? "border-accent-strong bg-accent shadow-sm" : "border-border bg-card opacity-70"}`}
             >
               <p className="font-semibold">Sarah A.</p>
-              <p className="opacity-55">{t(12e4)}</p>
+              <p className="opacity-85">{t(12e4)}</p>
             </div>
             {a % 2 == 0 && (
               <div className="mt-2 rounded-lg border border-border bg-card p-2.5 text-[0.7rem] opacity-70">
                 <p className="font-semibold">Khalid R.</p>
-                <p className="opacity-55">{t(45e3)}</p>
+                <p className="opacity-85">{t(45e3)}</p>
               </div>
             )}
           </div>
@@ -1795,7 +1859,7 @@ function DashboardSection() {
     ];
   return (
     <Section tone="dark">
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "Finally See What's Happening Between Marketing and Sales.",
           ar: "أخيراً... شاهد ما يحدث بين التسويق والمبيعات.",
@@ -1810,7 +1874,7 @@ function DashboardSection() {
             <p className="font-display text-2xl font-bold tracking-tight md:text-3xl">
               {t.v}
             </p>
-            <p className="mt-1.5 text-[0.72rem] uppercase tracking-[0.12em] opacity-55">
+            <p className="mt-1.5 text-[0.72rem] uppercase tracking-[0.12em] opacity-80">
               {e(t.l)}
             </p>
           </div>
@@ -1851,7 +1915,7 @@ function DashboardSection() {
             key={t.en}
             className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
           >
-            <p className="text-[0.72rem] font-medium opacity-60">{e(t)}</p>
+            <p className="text-[0.72rem] font-medium opacity-85">{e(t)}</p>
             <div className="mt-4 flex h-16 items-end gap-1.5">
               {[40, 65, 35, 80, 55, 95, 70].map((e, t) => (
                 <span
@@ -1872,7 +1936,7 @@ function DashboardSection() {
           ar: "لوحة واحدة من الإنفاق الإعلاني إلى الإيراد.",
         })}
       </p>
-      <p className="mt-3 text-[0.72rem] opacity-45">
+      <p className="mt-3 text-[0.72rem] opacity-80">
         {e({
           en: "Figures shown are illustrative.",
           ar: "الأرقام المعروضة توضيحية فقط.",
@@ -1885,13 +1949,14 @@ function CampaignsSection() {
   let { t: e } = useLocale();
   return (
     <Section>
-      <SectionHeading className="max-w-3xl">
-        {e({
-          en: "Your CRM Shouldn't Just Store Contacts.",
-          ar: "نظامك ليس مجرد دفتر جهات اتصال.",
-        })}
-        <br />
-        <span className="opacity-45">
+      <SectionHeading>
+        <span className="line">
+          {e({
+            en: "Your CRM Shouldn't Just Store Contacts.",
+            ar: "نظامك ليس مجرد دفتر جهات اتصال.",
+          })}
+        </span>
+        <span className="line text-foreground/75">
           {e({
             en: "It Should Generate Revenue From Them.",
             ar: "يجب أن يصنع منهم إيرادات.",
@@ -2044,7 +2109,7 @@ function ReactivationSection() {
     ];
   return (
     <Section tone="dark">
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "You May Already Be Sitting On Your Next Customers.",
           ar: "ربما عملاؤك القادمون موجودون لديك بالفعل.",
@@ -2052,7 +2117,7 @@ function ReactivationSection() {
       </SectionHeading>
       <div className="mt-8 grid gap-10 lg:grid-cols-2">
         <div>
-          <p className="text-sm leading-relaxed opacity-65">
+          <p className="text-sm leading-relaxed opacity-90">
             {e({
               en: "Your database contains prospects who:",
               ar: "قاعدة بياناتك تضم عملاء:",
@@ -2084,7 +2149,7 @@ function ReactivationSection() {
               <li key={t.en}>— {e(t)}</li>
             ))}
           </ul>
-          <p className="mt-6 text-sm leading-relaxed opacity-65">
+          <p className="mt-6 text-sm leading-relaxed opacity-90">
             {e({
               en: "Instead of constantly paying for new leads, Sales OS helps reactivate the opportunities you already paid to acquire.",
               ar: "بدلاً من الدفع المستمر لعملاء جدد، يساعدك النظام على إعادة تنشيط الفرص التي دفعت ثمنها بالفعل.",
@@ -2108,7 +2173,7 @@ function ReactivationSection() {
               >
                 <p className="font-display text-lg font-bold">{n.v}</p>
                 {n.l && (
-                  <p className="text-[0.7rem] uppercase tracking-[0.14em] opacity-55">
+                  <p className="text-[0.7rem] uppercase tracking-[0.14em] opacity-80">
                     {e(n.l)}
                   </p>
                 )}
@@ -2118,7 +2183,7 @@ function ReactivationSection() {
               )}
             </div>
           ))}
-          <p className="mt-3 text-center text-[0.7rem] opacity-45">
+          <p className="mt-3 text-center text-[0.7rem] opacity-80">
             {e({
               en: "Numbers shown are an illustrative example only.",
               ar: "الأرقام المعروضة مثال توضيحي فقط.",
@@ -2185,7 +2250,7 @@ function AutomationsSection() {
           ar: "الأتمتة",
         })}
       </Eyebrow>
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "Your Business Keeps Moving Even When Nobody Clicks “Follow Up.”",
           ar: "عملك يستمر حتى لو لم يضغط أحد زر «متابعة».",
@@ -2214,7 +2279,7 @@ function AutomationsSection() {
             ar: "نسي مندوبك المتابعة؟ النظام لم ينسَ.",
           })}
         </p>
-        <p className="mt-2 text-sm opacity-65">
+        <p className="mt-2 text-sm opacity-90">
           {e({
             en: "Automated workflows continue engaging prospects until they reply, book, buy or opt out.",
             ar: "تستمر مسارات الأتمتة في التفاعل مع العميل حتى يرد أو يحجز أو يشتري أو يطلب التوقف.",
@@ -2570,7 +2635,7 @@ function PlatformSection() {
   let { t: e } = useLocale();
   return (
     <Section>
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "One Revenue System Instead of 10 Disconnected Tools",
           ar: "نظام إيرادات واحد بدل عشر أدوات متفرقة",
@@ -2582,7 +2647,7 @@ function PlatformSection() {
             <h3 className="font-display text-[0.7rem] font-bold uppercase tracking-[0.18em] text-accent-strong">
               {e(t.t)}
             </h3>
-            <ul className="mt-4 grid gap-1.5 text-[0.82rem] opacity-70">
+            <ul className="mt-4 grid gap-1.5 text-[0.82rem] opacity-90">
               {t.items.map((t) => (
                 <li key={t.en}>{e(t)}</li>
               ))}
@@ -2676,7 +2741,7 @@ function ValueSection() {
   let { t: e, money: t } = useLocale();
   return (
     <Section tone="sand">
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "Everything Required to Build Your Revenue Infrastructure",
           ar: "كل ما يلزم لبناء البنية التحتية لإيراداتك",
@@ -2689,7 +2754,7 @@ function ValueSection() {
             className="rounded-2xl border border-foreground/10 bg-background px-4 py-4"
           >
             <p className="text-sm font-semibold leading-snug">{e(n.t)}</p>
-            <p className="mt-1.5 text-xs opacity-55">
+            <p className="mt-1.5 text-xs opacity-85">
               {t(n.v)}
               {e({
                 en: "/month value",
@@ -2701,7 +2766,7 @@ function ValueSection() {
       </div>
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         <div className="rounded-2xl border border-foreground/15 bg-background p-7">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] opacity-50">
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] opacity-80">
             {e({
               en: "Total standalone value",
               ar: "إجمالي القيمة المنفصلة",
@@ -2712,7 +2777,7 @@ function ValueSection() {
           </p>
         </div>
         <div className="rounded-2xl bg-ink p-7 text-ink-foreground">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] opacity-55">
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] opacity-80">
             {e({
               en: "Your investment",
               ar: "استثمارك",
@@ -2724,7 +2789,7 @@ function ValueSection() {
               ar: "من ",
             })}
             {t(2500)}
-            <span className="text-base opacity-60">
+            <span className="text-base opacity-90">
               {e({
                 en: "/month",
                 ar: " شهرياً",
@@ -2733,7 +2798,7 @@ function ValueSection() {
           </p>
         </div>
       </div>
-      <p className="mt-4 text-[0.72rem] opacity-50">
+      <p className="mt-4 text-[0.72rem] opacity-80">
         {e({
           en: "Illustrative standalone service value — not a quoted market price.",
           ar: "قيمة توضيحية للخدمات المنفصلة، وليست أسعار سوق فعلية.",
@@ -2951,13 +3016,14 @@ function ManagedSection() {
   let { t: e } = useLocale();
   return (
     <Section tone="dark">
-      <SectionHeading className="max-w-3xl">
-        {e({
-          en: "We Don’t Get Paid for Activity.",
-          ar: "لا نتقاضى أجراً على النشاط.",
-        })}
-        <br />
-        <span className="opacity-50">
+      <SectionHeading className="text-ink-foreground">
+        <span className="line">
+          {e({
+            en: "We Don’t Get Paid for Activity.",
+            ar: "لا نتقاضى أجراً على النشاط.",
+          })}
+        </span>
+        <span className="line text-ink-foreground/80">
           {e({
             en: "We Get Paid for Outcomes.",
             ar: "نتقاضى أجراً على النتائج.",
@@ -3134,7 +3200,7 @@ function WeeksSection() {
             <h3 className="mt-2 font-display text-lg font-bold tracking-tight">
               {e(t.t)}
             </h3>
-            <ul className="mt-4 grid gap-1.5 text-[0.82rem] opacity-65">
+            <ul className="mt-4 grid gap-1.5 text-[0.82rem] opacity-90">
               {t.items.map((t) => (
                 <li key={t.en}>{e(t)}</li>
               ))}
@@ -3463,7 +3529,7 @@ function AgencySection() {
             <h3 className="font-display text-[0.7rem] font-bold uppercase tracking-[0.18em] text-accent-strong">
               {e(t.t)}
             </h3>
-            <ul className="mt-4 grid gap-2 text-sm opacity-70">
+            <ul className="mt-4 grid gap-2 text-sm opacity-90">
               {t.items.map((t) => (
                 <li key={t.en}>{e(t)}</li>
               ))}
@@ -3721,10 +3787,10 @@ function PricingCard({
       <h3 className="mt-2 font-display text-xl font-bold tracking-tight">
         {t(plan.name)}
       </h3>
-      <p className="mt-3 text-sm opacity-65">{t(plan.for)}</p>
+      <p className="mt-3 text-sm opacity-90">{t(plan.for)}</p>
       <p className="mt-5 font-display text-3xl font-bold tracking-tight">
         {money(plan.price)}
-        <span className="text-sm font-medium opacity-50">
+        <span className="text-sm font-medium opacity-80">
           {t({
             en: " / month",
             ar: " / شهرياً",
@@ -3738,7 +3804,7 @@ function PricingCard({
       >
         {t(CONSULTATION_CTA)}
       </CtaLink>
-      <p className="mt-6 text-[0.65rem] font-bold uppercase tracking-[0.16em] opacity-45">
+      <p className="mt-6 text-[0.65rem] font-bold uppercase tracking-[0.16em] opacity-80">
         {t(plan.intro)}
       </p>
       <ul className="mt-3 grid flex-1 gap-2.5">
@@ -3747,7 +3813,7 @@ function PricingCard({
         ))}
       </ul>
       {plan.note && (
-        <p className="mt-5 text-[0.78rem] opacity-55">{t(plan.note)}</p>
+        <p className="mt-5 text-[0.78rem] opacity-85">{t(plan.note)}</p>
       )}
     </div>
   );
@@ -3757,13 +3823,14 @@ function PricingSection() {
   let { t: e, money: t, country: n, setCountry: r } = useLocale();
   return (
     <Section id="pricing">
-      <SectionHeading className="max-w-3xl">
-        {e({
-          en: "Your Complete Revenue Infrastructure.",
-          ar: "بنية إيراداتك الكاملة.",
-        })}
-        <br />
-        <span className="opacity-45">
+      <SectionHeading>
+        <span className="line">
+          {e({
+            en: "Your Complete Revenue Infrastructure.",
+            ar: "بنية إيراداتك الكاملة.",
+          })}
+        </span>
+        <span className="line text-foreground/75">
           {e({
             en: "For Less Than The Cost Of One Employee.",
             ar: "بأقل من تكلفة موظف واحد.",
@@ -3801,7 +3868,7 @@ function PricingSection() {
           <PricingCard key={plan.name.en} plan={plan} money={t} t={e} />
         ))}
       </div>
-      <p className="mt-6 max-w-2xl text-[0.78rem] leading-relaxed opacity-55">
+      <p className="mt-6 max-w-2xl text-[0.78rem] leading-relaxed opacity-85">
         {e({
           en: "Usage-based WhatsApp, SMS, email, telephony and AI consumption may be billed separately depending on usage. No hidden software maze. No need to assemble multiple platforms yourself.",
           ar: "قد تُحتسب رسوم استهلاك واتساب والرسائل والبريد والاتصالات والذكاء الاصطناعي بشكل منفصل حسب الاستخدام. بلا متاهة برامج خفية، ودون حاجة لتجميع منصات متعددة بنفسك.",
@@ -3960,7 +4027,7 @@ function CalculatorSection() {
     ];
   return (
     <Section>
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "How Much Revenue Could Be Hiding In Your Existing Leads?",
           ar: "كم من الإيرادات مخبأة في عملائك الحاليين؟",
@@ -3971,7 +4038,7 @@ function CalculatorSection() {
           {g.map((t) => (
             <div key={t.l.en}>
               <div className="flex justify-between text-[0.8rem] font-medium">
-                <span className="opacity-60">{e(t.l)}</span>
+                <span className="opacity-85">{e(t.l)}</span>
                 <span className="font-bold">{t.v.toLocaleString()}</span>
               </div>
               <input
@@ -4022,7 +4089,7 @@ function CalculatorSection() {
                 key={t.l.en}
                 className="border-b border-white/10 pb-4 last:border-0"
               >
-                <p className="text-[0.68rem] uppercase tracking-[0.16em] opacity-50">
+                <p className="text-[0.68rem] uppercase tracking-[0.16em] opacity-80">
                   {e(t.l)}
                 </p>
                 <p
@@ -4033,7 +4100,7 @@ function CalculatorSection() {
               </div>
             ))}
           </div>
-          <p className="mt-5 text-[0.7rem] opacity-45">
+          <p className="mt-5 text-[0.7rem] opacity-80">
             {e({
               en: "Illustrative estimate only. Actual results vary by business.",
               ar: "تقدير توضيحي فقط. النتائج الفعلية تختلف حسب طبيعة كل نشاط.",
@@ -4275,7 +4342,7 @@ function FaqSection() {
               </span>
             </button>
             {t === a && (
-              <p className="border-t border-foreground/10 px-5 py-4 text-sm leading-relaxed opacity-70">
+              <p className="border-t border-foreground/10 px-5 py-4 text-sm leading-relaxed opacity-90">
                 {e(r.a)}
               </p>
             )}
@@ -4326,7 +4393,7 @@ function AuditSection() {
                   ar: "تم استلام طلبك.",
                 })}
               </p>
-              <p className="mt-3 text-sm opacity-65">
+              <p className="mt-3 text-sm opacity-90">
                 {e({
                   en: "Our team will contact you on WhatsApp within one business day with your revenue leak assessment.",
                   ar: "سيتواصل معك فريقنا عبر واتساب خلال يوم عمل واحد بتقييم تسرب الإيرادات الخاص بك.",
@@ -4468,7 +4535,7 @@ function AuditSection() {
                   key={n.n}
                   className="grid gap-1.5 text-[0.75rem] font-semibold"
                 >
-                  <span className="opacity-60">{e(n.l)}</span>
+                  <span className="opacity-85">{e(n.l)}</span>
                   {n.opts ? (
                     <select
                       name={n.n}
@@ -4516,20 +4583,20 @@ function ClosingSection() {
   return (
     <Section tone="dark">
       <Eyebrow>
-        <span className="text-ink-foreground/55">
+        <span className="text-ink-foreground/85">
           {e({
             en: "Your marketing is already generating opportunities.",
             ar: "تسويقك يصنع الفرص بالفعل.",
           })}
         </span>
       </Eyebrow>
-      <SectionHeading className="max-w-3xl">
+      <SectionHeading>
         {e({
           en: "Stop Letting Your Revenue System Lose Them.",
           ar: "لا تدع نظام إيراداتك يفقدها.",
         })}
       </SectionHeading>
-      <SectionText className="opacity-60">
+      <SectionText>
         {e({
           en: "See how AI Revenue OS can connect your marketing, WhatsApp, sales pipeline and customer follow-up into one managed system.",
           ar: "شاهد كيف يربط النظام تسويقك وواتساب ومسار مبيعاتك ومتابعة عملائك في نظام واحد مُدار.",
@@ -4549,7 +4616,7 @@ function ClosingSection() {
           })}
         </CtaLink>
       </div>
-      <p className="mt-10 text-sm opacity-50">
+      <p className="mt-10 text-sm opacity-85">
         UAE 🇦🇪 | Saudi Arabia 🇸🇦 · English | العربية
       </p>
     </Section>
@@ -4559,7 +4626,7 @@ function SiteFooter() {
   let { t: e } = useLocale();
   return (
     <footer className="border-t border-border px-5 py-10 md:px-10">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 text-[0.78rem] opacity-55">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 text-[0.78rem] opacity-80">
         <p>© {new Date().getFullYear()} Spark AI</p>
         <p>
           {e({
@@ -4572,18 +4639,7 @@ function SiteFooter() {
   );
 }
 function FloatingActions() {
-  let { t: e } = useLocale(),
-    [t, n] = useState(false),
-    [a, o] = useState(false);
-  useEffect(() => {
-    let e = (event: MouseEvent) => {
-      event.clientY <= 0 && !a && (n(true), o(true));
-    };
-    return (
-      document.addEventListener("mouseout", e),
-      () => document.removeEventListener("mouseout", e)
-    );
-  }, [a]);
+  let { t: e } = useLocale();
   return (
     <>
       <a
@@ -4606,43 +4662,6 @@ function FloatingActions() {
           })}
         </a>
       </div>
-      {t && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-ink/60 p-5 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-border bg-background p-8 text-center">
-            <p className="font-display text-2xl font-bold tracking-tight">
-              {e({
-                en: "Before You Go…",
-                ar: "قبل أن تغادر…",
-              })}
-            </p>
-            <p className="mt-3 text-sm opacity-65">
-              {e({
-                en: "Find out where leads are leaking from your sales process.",
-                ar: "اكتشف أين تتسرب الفرص من عملية مبيعاتك.",
-              })}
-            </p>
-            <a
-              href="#audit"
-              onClick={() => n(false)}
-              className="mt-6 inline-flex rounded-full bg-foreground px-6 py-3.5 text-sm font-semibold text-background"
-            >
-              {e({
-                en: "Get My Free Revenue Leak Audit",
-                ar: "احصل على تدقيق التسرب المجاني",
-              })}
-            </a>
-            <button
-              onClick={() => n(false)}
-              className="mt-4 block w-full text-[0.75rem] opacity-50 hover:opacity-80"
-            >
-              {e({
-                en: "No thanks",
-                ar: "لا، شكراً",
-              })}
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
@@ -4654,6 +4673,11 @@ function RevenueOS() {
         <main className="pb-20 md:pb-0">
           <Hero />
           <ProblemSection />
+          <section className="w-full px-5 pb-16 pt-16 md:px-10 md:pb-24 md:pt-24">
+            <div className="mx-auto w-full max-w-6xl">
+              <FlowDiagram />
+            </div>
+          </section>
           <ProductSection />
           <CaptureSection />
           <RespondSection />
