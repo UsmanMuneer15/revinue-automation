@@ -830,6 +830,9 @@ function ProblemSection() {
           </div>
         ))}
       </div>
+      <div className="mt-12">
+        <FlowDiagram />
+      </div>
       <SectionHeading as="h3" className="mt-12">
         {e({
           en: "Your customer journey is scattered across tools, tabs, inboxes and people.",
@@ -4673,11 +4676,6 @@ function RevenueOS() {
         <main className="pb-20 md:pb-0">
           <Hero />
           <ProblemSection />
-          <section className="w-full px-5 pb-16 pt-16 md:px-10 md:pb-24 md:pt-24">
-            <div className="mx-auto w-full max-w-6xl">
-              <FlowDiagram />
-            </div>
-          </section>
           <ProductSection />
           <CaptureSection />
           <RespondSection />
