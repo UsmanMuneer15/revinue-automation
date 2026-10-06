@@ -795,78 +795,82 @@ const BROKEN_JOURNEY = [
 function ProblemSection() {
   let { t: e } = useLocale();
   return (
-    <Section tone="sand">
-      <SectionHeading>
-        <span className="line">
+    <>
+      <Section tone="sand" className="pb-12 md:pb-16">
+        <SectionHeading>
+          <span className="line">
+            {e({
+              en: "Most Businesses Don't Have a Lead Problem.",
+              ar: "معظم الشركات لا تعاني من نقص العملاء المحتملين.",
+            })}
+          </span>
+          <span className="line text-foreground/75">
+            {e({
+              en: "They Have a Revenue Infrastructure Problem.",
+              ar: "بل من ضعف البنية التحتية للإيرادات.",
+            })}
+          </span>
+        </SectionHeading>
+        <SectionText>
           {e({
-            en: "Most Businesses Don't Have a Lead Problem.",
-            ar: "معظم الشركات لا تعاني من نقص العملاء المحتملين.",
+            en: "You're already paying to generate attention. But what happens after someone clicks?",
+            ar: "أنت تدفع بالفعل لجذب الانتباه. لكن ماذا يحدث بعد أن ينقر العميل؟",
           })}
-        </span>
-        <span className="line text-foreground/75">
-          {e({
-            en: "They Have a Revenue Infrastructure Problem.",
-            ar: "بل من ضعف البنية التحتية للإيرادات.",
-          })}
-        </span>
-      </SectionHeading>
-      <SectionText>
-        {e({
-          en: "You're already paying to generate attention. But what happens after someone clicks?",
-          ar: "أنت تدفع بالفعل لجذب الانتباه. لكن ماذا يحدث بعد أن ينقر العميل؟",
-        })}
-      </SectionText>
-      <div className="mt-10 grid gap-3 md:grid-cols-2">
-        {BROKEN_JOURNEY.map((t) => (
-          <div
-            key={t.a.en}
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-4 text-sm shadow-[0_12px_30px_-24px_rgba(0,0,0,0.45)]"
-          >
-            <span className="rounded-full bg-sand px-3 py-1.5 text-[0.75rem] font-semibold">
-              {e(t.a)}
-            </span>
-            <span className="text-accent-strong">→</span>
-            <span className="text-foreground/80">{e(t.b)}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-12">
+        </SectionText>
+        <div className="mt-10 grid gap-3 md:grid-cols-2">
+          {BROKEN_JOURNEY.map((t) => (
+            <div
+              key={t.a.en}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-4 text-sm shadow-[0_12px_30px_-24px_rgba(0,0,0,0.45)]"
+            >
+              <span className="rounded-full bg-sand px-3 py-1.5 text-[0.75rem] font-semibold">
+                {e(t.a)}
+              </span>
+              <span className="text-accent-strong">→</span>
+              <span className="text-foreground/80">{e(t.b)}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+      <Section className="py-12 md:py-16">
         <FlowDiagram />
-      </div>
-      <SectionHeading as="h3" className="mt-12">
-        {e({
-          en: "Your customer journey is scattered across tools, tabs, inboxes and people.",
-          ar: "رحلة عميلك موزعة بين أدوات ونوافذ وصناديق بريد وأشخاص.",
-        })}
-      </SectionHeading>
-      <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {$e.map((t, index) => (
-          <Card key={t.t.en} className="relative overflow-hidden">
-            <span className="mb-4 grid size-9 place-items-center rounded-xl bg-sand font-display text-sm font-bold text-accent-strong">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="font-display text-lg font-bold tracking-tight">
-              {e(t.t)}
-            </h3>
-            <p className="mt-2.5 text-sm leading-relaxed text-foreground/85">{e(t.b)}</p>
-          </Card>
-        ))}
-      </div>
-      <div className="mt-12 rounded-2xl border border-foreground/15 bg-background p-8 md:p-12">
-        <p className="font-display text-2xl font-bold leading-tight tracking-tight md:text-4xl">
+      </Section>
+      <Section tone="sand" className="pt-12 md:pt-16">
+        <SectionHeading as="h3">
           {e({
-            en: "You don't necessarily need more leads. You need a better system for converting the leads you already have.",
-            ar: "لست بحاجة دائماً إلى عملاء أكثر. أنت بحاجة إلى نظام أفضل لتحويل العملاء الذين لديك.",
+            en: "Your customer journey is scattered across tools, tabs, inboxes and people.",
+            ar: "رحلة عميلك موزعة بين أدوات ونوافذ وصناديق بريد وأشخاص.",
           })}
-        </p>
-        <CtaLink className="mt-8">
-          {e({
-            en: "Fix My Lead Conversion System",
-            ar: "أصلح نظام تحويل العملاء لدي",
-          })}
-        </CtaLink>
-      </div>
-    </Section>
+        </SectionHeading>
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {$e.map((t, index) => (
+            <Card key={t.t.en} className="relative overflow-hidden">
+              <span className="mb-4 grid size-9 place-items-center rounded-xl bg-sand font-display text-sm font-bold text-accent-strong">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="font-display text-lg font-bold tracking-tight">
+                {e(t.t)}
+              </h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-foreground/85">{e(t.b)}</p>
+            </Card>
+          ))}
+        </div>
+        <div className="mt-12 rounded-2xl border border-foreground/15 bg-background p-8 md:p-12">
+          <p className="font-display text-2xl font-bold leading-tight tracking-tight md:text-4xl">
+            {e({
+              en: "You don't necessarily need more leads. You need a better system for converting the leads you already have.",
+              ar: "لست بحاجة دائماً إلى عملاء أكثر. أنت بحاجة إلى نظام أفضل لتحويل العملاء الذين لديك.",
+            })}
+          </p>
+          <CtaLink className="mt-8">
+            {e({
+              en: "Fix My Lead Conversion System",
+              ar: "أصلح نظام تحويل العملاء لدي",
+            })}
+          </CtaLink>
+        </div>
+      </Section>
+    </>
   );
 }
 const CAPTURE_CHANNELS = [
