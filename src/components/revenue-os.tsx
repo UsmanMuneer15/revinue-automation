@@ -3600,6 +3600,7 @@ type PricingPlan = {
   ribbon?: boolean;
   intro: Copy;
   items: Copy[];
+  sections?: { title: Copy; items: Copy[] }[];
   note?: Copy;
 };
 
@@ -3614,21 +3615,19 @@ const SOFTWARE_PLANS: PricingPlan[] = [
     price: 2500,
     intro: { en: "Includes", ar: "تشمل" },
     items: [
-      { en: "CRM & sales pipeline", ar: "نظام العملاء ومسار المبيعات" },
-      { en: "Unified conversations inbox", ar: "صندوق محادثات موحّد" },
-      { en: "Forms & lead capture", ar: "نماذج والتقاط العملاء" },
-      { en: "Appointment booking", ar: "حجز المواعيد" },
-      { en: "Lead source tracking", ar: "تتبع مصادر العملاء" },
-      { en: "1 landing page / funnel", ar: "صفحة مقصودة / قمع واحد" },
-      { en: "Email nurture & speed to lead", ar: "رعاية بالبريد وسرعة الرد" },
-      { en: "Basic routing & reporting", ar: "توجيه وتقارير أساسية" },
-      { en: "2 lead connectors", ar: "موصّلان للعملاء" },
-      { en: "1 location", ar: "موقع واحد" },
+      { en: "CRM", ar: "نظام إدارة العملاء" },
+      { en: "Sales pipeline", ar: "مسار المبيعات" },
+      { en: "Unified inbox", ar: "صندوق وارد موحّد" },
+      { en: "WhatsApp integration", ar: "تكامل واتساب" },
+      { en: "Lead capture", ar: "التقاط العملاء المحتملين" },
+      { en: "Forms", ar: "النماذج" },
+      { en: "Calendar", ar: "التقويم" },
+      { en: "Email automation", ar: "أتمتة البريد الإلكتروني" },
+      { en: "Basic follow-up workflows", ar: "مسارات متابعة أساسية" },
+      { en: "Review automation", ar: "أتمتة التقييمات" },
+      { en: "Basic dashboard", ar: "لوحة تحكم أساسية" },
+      { en: "Technical support", ar: "دعم فني" },
     ],
-    note: {
-      en: "WhatsApp available as an add-on.",
-      ar: "واتساب متاح كإضافة اختيارية.",
-    },
   },
   {
     name: { en: "Professional", ar: "الاحترافية" },
@@ -3644,22 +3643,21 @@ const SOFTWARE_PLANS: PricingPlan[] = [
       ar: "كل ما في الأساسية، بالإضافة إلى",
     },
     items: [
-      { en: "WhatsApp integration", ar: "ربط واتساب" },
-      { en: "Up to 3 landing pages / funnels", ar: "حتى 3 صفحات / قنوات" },
-      { en: "Advanced lead routing", ar: "توجيه متقدم للعملاء" },
-      { en: "Missed call recovery", ar: "استرجاع المكالمات الفائتة" },
+      { en: "AI Sales Agent", ar: "وكيل مبيعات بالذكاء الاصطناعي" },
+      { en: "AI lead qualification", ar: "تأهيل العملاء بالذكاء الاصطناعي" },
+      {
+        en: "Advanced WhatsApp automation",
+        ar: "أتمتة واتساب متقدمة",
+      },
+      { en: "Multi-channel nurturing", ar: "رعاية متعددة القنوات" },
+      { en: "Database reactivation", ar: "إعادة تنشيط قاعدة البيانات" },
+      { en: "Advanced workflows", ar: "مسارات عمل متقدمة" },
+      { en: "Lead scoring", ar: "تقييم العملاء المحتملين" },
       { en: "No-show recovery", ar: "استرجاع الغائبين عن المواعيد" },
-      { en: "Quote / proposal follow-up", ar: "متابعة العروض والأسعار" },
-      { en: "Database reactivation", ar: "إعادة تنشيط القاعدة" },
-      { en: "Social media planner", ar: "مخطط وسائل التواصل" },
-      { en: "Conversation AI – Basic", ar: "ذكاء المحادثة — أساسي" },
-      { en: "5 lead connectors", ar: "5 موصّلات للعملاء" },
-      { en: "3 locations*", ar: "3 مواقع*" },
+      { en: "Marketing campaigns", ar: "حملات تسويقية" },
+      { en: "Advanced dashboards", ar: "لوحات تحكم متقدمة" },
+      { en: "Monthly optimisation", ar: "تحسين شهري" },
     ],
-    note: {
-      en: "Best fit for most growing sales teams.",
-      ar: "الأنسب لمعظم فرق المبيعات النامية.",
-    },
   },
   {
     name: { en: "Elite", ar: "النخبة" },
@@ -3674,95 +3672,255 @@ const SOFTWARE_PLANS: PricingPlan[] = [
       ar: "كل ما في الاحترافية، بالإضافة إلى",
     },
     items: [
-      { en: "Conversation AI – Advanced", ar: "ذكاء المحادثة — متقدم" },
-      { en: "AI lead qualification", ar: "تأهيل العملاء بالذكاء الاصطناعي" },
-      { en: "AI appointment booking", ar: "حجز مواعيد بالذكاء الاصطناعي" },
-      { en: "AI WhatsApp sales agent", ar: "وكيل مبيعات واتساب ذكي" },
+      { en: "Advanced AI agents", ar: "وكلاء ذكاء اصطناعي متقدمون" },
+      { en: "Multiple pipelines", ar: "مسارات مبيعات متعددة" },
+      { en: "Advanced integrations", ar: "تكاملات متقدمة" },
       {
-        en: "AI voice receptionist / sales agent",
-        ar: "موظف استقبال / مبيعات صوتي ذكي",
+        en: "Voice AI where applicable",
+        ar: "ذكاء صوتي حيث ينطبق",
       },
-      { en: "AI missed-lead recovery", ar: "استرجاع العملاء الفائتين بالذكاء" },
-      { en: "AI follow-up & reactivation", ar: "متابعة وإعادة تنشيط ذكية" },
-      { en: "Up to 5 landing pages / funnels", ar: "حتى 5 صفحات / قنوات" },
-      { en: "10 lead connectors", ar: "10 موصّلات للعملاء" },
-      { en: "Up to 3 locations*", ar: "حتى 3 مواقع*" },
+      {
+        en: "Custom workflow development",
+        ar: "تطوير مسارات عمل مخصصة",
+      },
+      { en: "Advanced sales automation", ar: "أتمتة مبيعات متقدمة" },
+      { en: "Custom dashboards", ar: "لوحات تحكم مخصصة" },
+      {
+        en: "Multiple departments / locations",
+        ar: "أقسام / مواقع متعددة",
+      },
+      {
+        en: "Advanced campaign management",
+        ar: "إدارة حملات متقدمة",
+      },
+      { en: "Priority support", ar: "دعم بأولوية" },
+      {
+        en: "Dedicated optimisation manager",
+        ar: "مدير تحسين مخصص",
+      },
     ],
-    note: {
-      en: "Built for high-volume and multi-location teams.",
-      ar: "مصمم للفرق ذات الحجم الكبير والمواقع المتعددة.",
-    },
   },
 ];
 
 const AGENT_PLANS: PricingPlan[] = [
   {
     name: {
-      en: "Starter + Human Agents",
-      ar: "الأساسية + وكلاء بشريون",
+      en: "Starter + Human Pod",
+      ar: "الأساسية + فريق بشري",
     },
     badge: { en: "Essential Team", ar: "فريق أساسي" },
     for: {
-      en: "Sales OS with an essential execution team behind it.",
-      ar: "نظام المبيعات مع فريق تنفيذ أساسي خلفه.",
+      en: "Sales OS with content, SEO and growth operations behind it.",
+      ar: "نظام المبيعات مع محتوى وتحسين محركات البحث وعمليات نمو خلفه.",
     },
-    price: 5000,
+    price: 7500,
     intro: { en: "Includes", ar: "تشمل" },
     items: [
-      { en: "Sales & Marketing OS", ar: "نظام المبيعات والتسويق" },
-      { en: "Digital Advertising Specialist", ar: "أخصائي إعلانات رقمية" },
-      { en: "Graphic Designer", ar: "مصمم جرافيك" },
-      { en: "CRM Expert", ar: "خبير أنظمة العملاء" },
-      { en: "Social Media Manager", ar: "مدير وسائل التواصل" },
-      { en: "Monthly Optimization", ar: "تحسين شهري" },
+      { en: "AI Sales & Marketing OS", ar: "نظام المبيعات والتسويق بالذكاء الاصطناعي" },
+      { en: "CRM & Pipeline", ar: "نظام العملاء ومسار المبيعات" },
+      { en: "WhatsApp Integration", ar: "تكامل واتساب" },
+      { en: "Email Automation", ar: "أتمتة البريد الإلكتروني" },
+      { en: "AI Lead Follow-Up", ar: "متابعة العملاء بالذكاء الاصطناعي" },
+      { en: "AI Communication Agent", ar: "وكيل تواصل بالذكاء الاصطناعي" },
+      { en: "Appointment Booking", ar: "حجز المواعيد" },
+      { en: "Lead Dashboard", ar: "لوحة تحكم العملاء المحتملين" },
+    ],
+    sections: [
+      {
+        title: { en: "Content", ar: "المحتوى" },
+        items: [
+          { en: "8 social posts/month", ar: "8 منشورات اجتماعية / شهرياً" },
+          { en: "8 creative assets/month", ar: "8 أصول إبداعية / شهرياً" },
+          { en: "2 short-form videos", ar: "فيديوهان قصيران" },
+          { en: "2 social channels", ar: "قناتان اجتماعيتان" },
+          { en: "Content calendar", ar: "تقويم محتوى" },
+        ],
+      },
+      {
+        title: { en: "SEO", ar: "تحسين محركات البحث" },
+        items: [
+          { en: "SEO foundation", ar: "أساس تحسين محركات البحث" },
+          { en: "On-page SEO", ar: "تحسين الصفحات" },
+          { en: "Google Business Profile", ar: "ملف نشاط Google التجاري" },
+          { en: "Basic optimization", ar: "تحسين أساسي" },
+        ],
+      },
+      {
+        title: { en: "Growth Operations", ar: "عمليات النمو" },
+        items: [
+          {
+            en: "Lead/database management",
+            ar: "إدارة العملاء / قاعدة البيانات",
+          },
+          {
+            en: "Quarterly landing page/funnel",
+            ar: "صفحة مقصودة / قمع كل ربع سنة",
+          },
+          { en: "Reporting dashboard", ar: "لوحة تقارير" },
+          { en: "Quarterly growth review", ar: "مراجعة نمو ربع سنوية" },
+        ],
+      },
     ],
   },
   {
     name: {
-      en: "Pro + Human Agents",
-      ar: "الاحترافية + وكلاء بشريون",
+      en: "Professional + Human Pod",
+      ar: "الاحترافية + فريق بشري",
     },
     badge: { en: "Full Growth Team", ar: "فريق نمو كامل" },
     for: {
-      en: "A full growth team to accelerate pipeline and creative output.",
-      ar: "فريق نمو كامل لتسريع المسار والمخرجات الإبداعية.",
+      en: "Adds paid media, stronger content, SEO growth and conversion systems.",
+      ar: "يضيف الإعلانات المدفوعة ومحتوى أقوى ونمو تحسين البحث وأنظمة التحويل.",
     },
-    price: 7500,
+    price: 10000,
     popular: true,
     ribbon: true,
     intro: {
-      en: "Everything in Starter + Human Agents, plus",
-      ar: "كل ما في الأساسية + الوكلاء، بالإضافة إلى",
+      en: "Everything in Starter + Human Pod, plus",
+      ar: "كل ما في الأساسية + الفريق البشري، بالإضافة إلى",
     },
-    items: [
-      { en: "SEO Specialist", ar: "أخصائي تحسين محركات البحث" },
-      { en: "Video Editor", ar: "محرر فيديو" },
-      { en: "Appointment Setter", ar: "مسؤول حجز المواعيد" },
-      { en: "Data & Admin Support", ar: "دعم بيانات وإدارة" },
-      { en: "Advanced Reporting", ar: "تقارير متقدمة" },
+    items: [],
+    sections: [
+      {
+        title: { en: "Performance Marketing", ar: "تسويق الأداء" },
+        items: [
+          {
+            en: "Meta OR Google Ads management",
+            ar: "إدارة إعلانات ميتا أو جوجل",
+          },
+          { en: "Conversion tracking", ar: "تتبع التحويلات" },
+          { en: "Retargeting", ar: "إعادة الاستهداف" },
+          { en: "Audience optimization", ar: "تحسين الجمهور" },
+          { en: "Creative testing", ar: "اختبار الإبداعات" },
+        ],
+      },
+      {
+        title: { en: "Content", ar: "المحتوى" },
+        items: [
+          { en: "12 social posts/month", ar: "12 منشوراً اجتماعياً / شهرياً" },
+          {
+            en: "12 creative assets/month",
+            ar: "12 أصلاً إبداعياً / شهرياً",
+          },
+          { en: "4 short-form videos", ar: "4 فيديوهات قصيرة" },
+          { en: "3 social channels", ar: "3 قنوات اجتماعية" },
+          { en: "Community engagement", ar: "تفاعل المجتمع" },
+        ],
+      },
+      {
+        title: { en: "SEO Growth", ar: "نمو تحسين محركات البحث" },
+        items: [
+          { en: "Content SEO", ar: "تحسين محتوى محركات البحث" },
+          { en: "Local SEO", ar: "تحسين محلي" },
+          { en: "Backlink activity", ar: "نشاط الروابط الخلفية" },
+          { en: "Keyword tracking", ar: "تتبع الكلمات المفتاحية" },
+        ],
+      },
+      {
+        title: { en: "Conversion", ar: "التحويل" },
+        items: [
+          {
+            en: "1 landing page/funnel per month",
+            ar: "صفحة مقصودة / قمع واحد شهرياً",
+          },
+          { en: "Lead nurture", ar: "رعاية العملاء المحتملين" },
+          { en: "Database reactivation", ar: "إعادة تنشيط قاعدة البيانات" },
+          { en: "No-show recovery", ar: "استرجاع الغائبين عن المواعيد" },
+          { en: "Quote follow-up", ar: "متابعة عروض الأسعار" },
+          { en: "Monthly strategy session", ar: "جلسة استراتيجية شهرية" },
+        ],
+      },
     ],
   },
   {
     name: {
-      en: "Elite + Human Agents",
-      ar: "النخبة + وكلاء بشريون",
+      en: "Elite + Human Pod",
+      ar: "النخبة + فريق بشري",
     },
     badge: { en: "Scale Team", ar: "فريق التوسع" },
     for: {
-      en: "Full coverage for teams scaling across roles and markets.",
-      ar: "تغطية كاملة للفرق المتوسعة عبر الأدوار والأسواق.",
+      en: "Full-scale media, SEO, revenue systems and leadership support.",
+      ar: "تغطية كاملة للإعلام وتحسين البحث وأنظمة الإيرادات ودعم القيادة.",
     },
-    price: 10000,
+    price: 12500,
     intro: {
-      en: "Everything in Pro + Human Agents, plus",
-      ar: "كل ما في الاحترافية + الوكلاء، بالإضافة إلى",
+      en: "Everything in Professional + Human Pod, plus",
+      ar: "كل ما في الاحترافية + الفريق البشري، بالإضافة إلى",
     },
-    items: [
-      { en: "Higher Creative Capacity", ar: "سعة إبداعية أعلى" },
-      { en: "AI Agents", ar: "وكلاء ذكاء اصطناعي" },
-      { en: "Full 8-role coverage", ar: "تغطية كاملة لـ 8 أدوار" },
-      { en: "Advanced Automation", ar: "أتمتة متقدمة" },
-      { en: "Priority coordination", ar: "تنسيق بأولوية" },
+    items: [],
+    sections: [
+      {
+        title: { en: "Scale", ar: "التوسع" },
+        items: [
+          {
+            en: "Up to 3 paid advertising channels",
+            ar: "حتى 3 قنوات إعلانية مدفوعة",
+          },
+          { en: "Cross-channel retargeting", ar: "إعادة استهداف عبر القنوات" },
+          { en: "Advanced creative testing", ar: "اختبار إبداعي متقدم" },
+          { en: "16 social posts/month", ar: "16 منشوراً اجتماعياً / شهرياً" },
+          {
+            en: "20+ creative assets/month",
+            ar: "أكثر من 20 أصلاً إبداعياً / شهرياً",
+          },
+          { en: "8 short-form videos", ar: "8 فيديوهات قصيرة" },
+          { en: "4 social channels", ar: "4 قنوات اجتماعية" },
+          {
+            en: "2 funnels/landing pages per month",
+            ar: "قمعان / صفحتان مقصودتان شهرياً",
+          },
+        ],
+      },
+      {
+        title: { en: "Full SEO", ar: "تحسين محركات بحث كامل" },
+        items: [
+          {
+            en: "Technical SEO monitoring",
+            ar: "مراقبة تقنية لتحسين محركات البحث",
+          },
+          {
+            en: "Backlink/outreach activity",
+            ar: "نشاط الروابط / التواصل",
+          },
+          {
+            en: "Competitor & keyword research",
+            ar: "بحث المنافسين والكلمات المفتاحية",
+          },
+          { en: "Monthly SEO content", ar: "محتوى تحسين محركات البحث شهرياً" },
+        ],
+      },
+      {
+        title: { en: "Revenue", ar: "الإيرادات" },
+        items: [
+          {
+            en: "AI lead qualification",
+            ar: "تأهيل العملاء بالذكاء الاصطناعي",
+          },
+          {
+            en: "AI WhatsApp follow-up",
+            ar: "متابعة واتساب بالذكاء الاصطناعي",
+          },
+          {
+            en: "Advanced lead scoring & routing",
+            ar: "تقييم وتوجيه متقدم للعملاء",
+          },
+          { en: "Missed lead recovery", ar: "استرجاع العملاء الفائتين" },
+          { en: "Pipeline support", ar: "دعم مسار المبيعات" },
+          {
+            en: "Conversion rate optimization",
+            ar: "تحسين معدل التحويل",
+          },
+        ],
+      },
+      {
+        title: { en: "Leadership", ar: "القيادة" },
+        items: [
+          { en: "Biweekly growth strategy", ar: "استراتيجية نمو كل أسبوعين" },
+          { en: "Executive dashboard", ar: "لوحة تحكم تنفيذية" },
+          { en: "Quarterly business review", ar: "مراجعة أعمال ربع سنوية" },
+          { en: "Priority support", ar: "دعم بأولوية" },
+        ],
+      },
     ],
   },
 ];
@@ -3814,11 +3972,25 @@ function PricingCard({
       <p className="mt-6 text-[0.65rem] font-bold uppercase tracking-[0.16em] opacity-80">
         {t(plan.intro)}
       </p>
-      <ul className="mt-3 grid flex-1 gap-2.5">
-        {plan.items.map((item) => (
-          <Bullet key={item.en}>{t(item)}</Bullet>
-        ))}
-      </ul>
+      {plan.items.length > 0 && (
+        <ul className="mt-3 grid gap-2.5">
+          {plan.items.map((item) => (
+            <Bullet key={item.en}>{t(item)}</Bullet>
+          ))}
+        </ul>
+      )}
+      {plan.sections?.map((section) => (
+        <div key={section.title.en} className="mt-5">
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] opacity-80">
+            {t(section.title)}
+          </p>
+          <ul className="mt-3 grid gap-2.5">
+            {section.items.map((item) => (
+              <Bullet key={item.en}>{t(item)}</Bullet>
+            ))}
+          </ul>
+        </div>
+      ))}
       {plan.note && (
         <p className="mt-5 text-[0.78rem] opacity-85">{t(plan.note)}</p>
       )}
@@ -3866,8 +4038,8 @@ function PricingSection() {
       </div>
       <p className="mt-12 font-display text-xl font-bold tracking-tight md:text-2xl">
         {e({
-          en: "Sales OS + Human Agents",
-          ar: "نظام المبيعات + وكلاء بشريون",
+          en: "Sales OS + Human Pod",
+          ar: "نظام المبيعات + فريق بشري",
         })}
       </p>
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
