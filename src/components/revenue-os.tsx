@@ -1952,8 +1952,8 @@ function CampaignsSection() {
       <SectionHeading>
         <span className="line">
           {e({
-          en: "Your Sales OS Shouldn't Just Store Contacts.",
-          ar: "نظام المبيعات ليس مجرد دفتر جهات اتصال.",
+          en: "Your CRM Shouldn't Just Store Contacts.",
+          ar: "نظامك ليس مجرد دفتر جهات اتصال.",
           })}
         </span>
         <span className="line text-foreground/75">
@@ -2292,8 +2292,8 @@ function AutomationsSection() {
 const PLATFORM_GROUPS = [
   {
     t: {
-      en: "Sales OS",
-      ar: "نظام المبيعات",
+      en: "CRM & Sales",
+      ar: "إدارة العملاء والمبيعات",
     },
     items: [
       {
@@ -2661,8 +2661,8 @@ function PlatformSection() {
 const VALUE_ITEMS = [
   {
     t: {
-      en: "Sales OS",
-      ar: "نظام المبيعات",
+      en: "AI Revenue CRM",
+      ar: "نظام إدارة الإيرادات",
     },
     v: 1e3,
   },
@@ -2814,8 +2814,8 @@ const COMPARISON_ROWS = [
       ar: "نظام عملاء منفصل",
     },
     {
-      en: "One Sales OS",
-      ar: "نظام مبيعات واحد",
+      en: "One CRM",
+      ar: "نظام واحد",
     },
   ],
   [
@@ -2960,8 +2960,8 @@ const MANAGED_ITEMS = [
     ar: "رسم مسار الإيرادات",
   },
   {
-    en: "Sales OS configuration",
-    ar: "إعداد نظام المبيعات",
+    en: "CRM configuration",
+    ar: "إعداد النظام",
   },
   {
     en: "Pipeline setup",
@@ -3088,8 +3088,8 @@ const WEEK_PLAN = [
     },
     items: [
       {
-        en: "Sales OS",
-        ar: "نظام المبيعات",
+        en: "CRM",
+        ar: "النظام",
       },
       {
         en: "Pipeline",
@@ -3431,7 +3431,7 @@ function AgencySection() {
     <Section tone="sand">
       <SectionHeading>
         {e({
-          en: "More Than A Sales OS Agency.",
+          en: "More Than A CRM Agency.",
           ar: "أكثر من مجرد وكالة أنظمة.",
         })}
       </SectionHeading>
@@ -3444,8 +3444,8 @@ function AgencySection() {
             },
             items: [
               {
-                en: "Sales OS",
-                ar: "نظام المبيعات",
+                en: "CRM",
+                ar: "نظام إدارة العملاء",
               },
               {
                 en: "AI",
@@ -3608,7 +3608,7 @@ const SOFTWARE_PLANS: PricingPlan[] = [
     price: 2500,
     intro: { en: "Includes", ar: "تشمل" },
     items: [
-      { en: "Sales OS", ar: "نظام المبيعات" },
+      { en: "CRM", ar: "نظام إدارة العملاء" },
       { en: "Sales pipeline", ar: "مسار المبيعات" },
       { en: "Unified inbox", ar: "صندوق وارد موحّد" },
       { en: "WhatsApp integration", ar: "تكامل واتساب" },
@@ -3710,7 +3710,7 @@ const AGENT_PLANS: PricingPlan[] = [
     intro: { en: "Includes", ar: "تشمل" },
     items: [
       { en: "AI Sales & Marketing OS", ar: "نظام المبيعات والتسويق بالذكاء الاصطناعي" },
-      { en: "Sales OS & Pipeline", ar: "نظام المبيعات ومسار البيع" },
+      { en: "CRM & Pipeline", ar: "نظام العملاء ومسار المبيعات" },
       { en: "WhatsApp Integration", ar: "تكامل واتساب" },
       { en: "Email Automation", ar: "أتمتة البريد الإلكتروني" },
       { en: "AI Lead Follow-Up", ar: "متابعة العملاء بالذكاء الاصطناعي" },
@@ -4853,7 +4853,7 @@ const POD_ROLES: { title: Copy; body: Copy }[] = [
     },
   },
   {
-    title: { en: "Sales OS & Automation Expert", ar: "خبير نظام المبيعات والأتمتة" },
+    title: { en: "CRM & Automation Expert", ar: "خبير أنظمة العملاء والأتمتة" },
     body: {
       en: "Builds your funnels, pipelines, automations, lead routing and integrations so no lead is ever lost.",
       ar: "يبني القنوات ومسارات البيع والأتمتة وتوجيه العملاء والتكاملات حتى لا يضيع أي عميل.",
@@ -4890,7 +4890,7 @@ const POD_ROLES: { title: Copy; body: Copy }[] = [
   {
     title: { en: "Data & Research Assistant", ar: "مساعد البيانات والبحث" },
     body: {
-      en: "Supports market and lead research, data management, Sales OS hygiene and campaign operations behind the scenes.",
+      en: "Supports market and lead research, data management, CRM hygiene and campaign operations behind the scenes.",
       ar: "يدعم بحث السوق والعملاء وإدارة البيانات ونظافة النظام وعمليات الحملات.",
     },
   },
