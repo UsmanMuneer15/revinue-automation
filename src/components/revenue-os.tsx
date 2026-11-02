@@ -10,6 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 type Lang = "en" | "ar";
@@ -108,7 +109,7 @@ function Section({
     <section
       id={id}
       className={cn(
-        "w-full overflow-x-clip px-5 py-20 md:px-10 md:py-28",
+        "w-full scroll-mt-24 overflow-x-clip px-5 py-20 md:px-10 md:py-28",
         tone === "dark" && "bg-ink text-ink-foreground",
         tone === "sand" && "bg-sand text-foreground",
         className,
@@ -292,38 +293,44 @@ function CtaLink({
 }
 const NAV_LINKS = [
   {
-    id: "product",
+    href: "/#product",
     en: "Product",
     ar: "المنتج",
   },
   {
-    id: "how",
+    href: "/#how",
     en: "How It Works",
     ar: "طريقة العمل",
   },
   {
-    id: "features",
+    href: "/#features",
     en: "Features",
     ar: "المزايا",
   },
   {
-    id: "solutions",
+    href: "/#solutions",
     en: "Solutions",
     ar: "القطاعات",
   },
   {
-    id: "pricing",
+    href: "/sales-human-pod",
+    en: "Sales Human Pod",
+    ar: "فريق المبيعات",
+  },
+  {
+    href: "/#pricing",
     en: "Pricing",
     ar: "الأسعار",
   },
   {
-    id: "faq",
+    href: "/#faq",
     en: "FAQ",
     ar: "الأسئلة",
   },
 ];
 function SiteHeader() {
   let { t: e, lang: t, setLang: n, country: a, setCountry: o } = useLocale(),
+    path = usePathname(),
     [c, l] = useState(false),
     [u, d] = useState(false);
   useEffect(() => {
@@ -341,7 +348,7 @@ function SiteHeader() {
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${c ? "border-b border-border bg-background/85 backdrop-blur-xl" : "border-b border-transparent"}`}
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5 md:h-[4.5rem] md:px-10">
-        <a href="#top" className="flex shrink-0 items-center gap-3">
+        <a href="/" className="flex shrink-0 items-center gap-3">
           <img
             src="/spark-ai-mark.jpg?v=9"
             alt=""
@@ -351,14 +358,14 @@ function SiteHeader() {
             Spark AI Sales OS
           </span>
         </a>
-        <nav className="hidden items-center gap-7 lg:flex">
-          {NAV_LINKS.map((t) => (
+        <nav className="hidden items-center gap-4 xl:gap-5 lg:flex">
+          {NAV_LINKS.map((item) => (
             <a
-              key={t.id}
-              href={`#${t.id}`}
-              className="text-[0.82rem] font-medium opacity-70 transition-opacity hover:opacity-100"
+              key={item.href}
+              href={item.href}
+              className={`whitespace-nowrap text-[0.78rem] font-medium transition-opacity hover:opacity-100 ${path === item.href ? "opacity-100" : "opacity-70"}`}
             >
-              {e(t)}
+              {e(item)}
             </a>
           ))}
         </nav>
@@ -384,7 +391,7 @@ function SiteHeader() {
             {t === "en" ? "العربية" : "EN"}
           </button>
           <CtaLink
-            href="#audit"
+            href="/#audit"
             className="hidden px-4 py-2.5 text-[0.78rem] md:inline-flex"
           >
             {e({
@@ -404,14 +411,14 @@ function SiteHeader() {
       {u && (
         <div className="border-t border-border bg-background px-5 py-4 lg:hidden">
           <div className="grid gap-1">
-            {NAV_LINKS.map((t) => (
+            {NAV_LINKS.map((item) => (
               <a
-                key={t.id}
-                href={`#${t.id}`}
+                key={item.href}
+                href={item.href}
                 onClick={() => d(false)}
-                className="rounded-lg px-2 py-2.5 text-sm font-medium hover:bg-accent"
+                className={`rounded-lg px-2 py-2.5 text-sm font-medium hover:bg-accent ${path === item.href ? "bg-accent" : ""}`}
               >
-                {e(t)}
+                {e(item)}
               </a>
             ))}
           </div>
@@ -3936,7 +3943,7 @@ function PricingCard({
 }) {
   return (
     <div
-      className={`relative flex flex-col rounded-3xl border p-7 ${plan.popular ? "border-transparent bg-ink text-ink-foreground" : "border-border bg-card"}`}
+      className={`relative flex h-full flex-col rounded-3xl border p-7 transition duration-200 hover:-translate-y-1 ${plan.popular ? "border-transparent bg-ink text-ink-foreground hover:shadow-[0_24px_50px_-28px_rgba(0,0,0,0.65)]" : "border-border bg-card hover:border-foreground/25 hover:shadow-[0_24px_50px_-28px_rgba(0,0,0,0.35)]"}`}
     >
       {plan.ribbon && (
         <span className="absolute -top-3 start-7 rounded-full bg-accent-strong px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.16em] text-background">
@@ -3949,10 +3956,10 @@ function PricingCard({
       <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-accent-strong">
         {t(plan.badge)}
       </p>
-      <h3 className="mt-2 font-display text-xl font-bold tracking-tight">
+      <h3 className="mt-2 min-h-14 font-display text-xl font-bold tracking-tight">
         {t(plan.name)}
       </h3>
-      <p className="mt-3 text-sm opacity-90">{t(plan.for)}</p>
+      <p className="mt-3 min-h-16 text-sm leading-relaxed opacity-90">{t(plan.for)}</p>
       <p className="mt-5 font-display text-3xl font-bold tracking-tight">
         {money(plan.price)}
         <span className="text-sm font-medium opacity-80">
@@ -3965,7 +3972,7 @@ function PricingCard({
       <CtaLink
         variant={plan.popular ? "light" : "primary"}
         className="mt-6 w-full"
-        href="#audit"
+        href="/#audit"
       >
         {t(CONSULTATION_CTA)}
       </CtaLink>
@@ -4832,7 +4839,7 @@ function FloatingActions() {
       </a>
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 backdrop-blur-xl md:hidden">
         <a
-          href="#audit"
+          href="/#audit"
           className="block rounded-full bg-foreground py-3.5 text-center text-sm font-semibold text-background"
         >
           {e({
@@ -4844,7 +4851,467 @@ function FloatingActions() {
     </>
   );
 }
+const POD_ROLES: { title: Copy; body: Copy }[] = [
+  {
+    title: { en: "Digital Advertising Specialist", ar: "أخصائي الإعلانات الرقمية" },
+    body: {
+      en: "Runs your Meta, Google, TikTok and YouTube campaigns, with sharp targeting, conversion tracking and constant optimisation.",
+      ar: "يدير حملات ميتا وجوجل وتيك توك ويوتيوب، باستهداف دقيق وتتبع للتحويل وتحسين مستمر.",
+    },
+  },
+  {
+    title: { en: "CRM & Automation Expert", ar: "خبير أنظمة العملاء والأتمتة" },
+    body: {
+      en: "Builds your funnels, pipelines, automations, lead routing and integrations so no lead is ever lost.",
+      ar: "يبني القنوات ومسارات البيع والأتمتة وتوجيه العملاء والتكاملات حتى لا يضيع أي عميل.",
+    },
+  },
+  {
+    title: { en: "Graphic Designer", ar: "مصمم جرافيك" },
+    body: {
+      en: "Creates the ad creatives, social assets, landing page visuals and branding that make your business look the part.",
+      ar: "يصمم إعلانات التواصل وصفحات الهبوط والهوية البصرية التي تليق بنشاطك.",
+    },
+  },
+  {
+    title: { en: "Video Editor", ar: "محرر فيديو" },
+    body: {
+      en: "Produces Reels, Shorts, VSLs and motion content that stops the scroll.",
+      ar: "ينتج ريلز وشورتس وفيديوهات بيع ومحتوى متحرك يوقف التمرير.",
+    },
+  },
+  {
+    title: { en: "SEO Specialist", ar: "أخصائي تحسين محركات البحث" },
+    body: {
+      en: "Handles on-page and technical SEO, local SEO, backlinks and search visibility, so customers find you first.",
+      ar: "يتولى تحسين الصفحات والتقنية والتحسين المحلي والروابط حتى يجدك العملاء أولاً.",
+    },
+  },
+  {
+    title: { en: "Social Media Manager", ar: "مدير وسائل التواصل" },
+    body: {
+      en: "Plans your content, publishing schedule and community engagement across your channels.",
+      ar: "يخطط المحتوى وجدول النشر وتفاعل المجتمع عبر قنواتك.",
+    },
+  },
+  {
+    title: { en: "Data & Research Assistant", ar: "مساعد البيانات والبحث" },
+    body: {
+      en: "Supports market and lead research, data management, CRM hygiene and campaign operations behind the scenes.",
+      ar: "يدعم بحث السوق والعملاء وإدارة البيانات ونظافة النظام وعمليات الحملات.",
+    },
+  },
+  {
+    title: { en: "Project Manager", ar: "مدير المشروع" },
+    body: {
+      en: "Your dedicated point of contact who coordinates all seven specialists, manages timelines, tracks deliverables and keeps the work moving without you chasing anyone.",
+      ar: "جهة تواصلك الوحيدة، ينسّق المتخصصين السبعة ويدير المواعيد ويتابع التسليم دون أن تلاحق أحداً.",
+    },
+  },
+];
+
+const POD_AI: Copy[] = [
+  { en: "Research", ar: "البحث" },
+  { en: "Drafting", ar: "صياغة المسودات" },
+  { en: "Lead scoring", ar: "تقييم العملاء" },
+  { en: "Initial responses", ar: "الردود الأولى" },
+  { en: "Follow-ups", ar: "المتابعات" },
+  { en: "Content variations", ar: "نسخ المحتوى" },
+  { en: "Reporting", ar: "التقارير" },
+  { en: "Data enrichment", ar: "إثراء البيانات" },
+  { en: "Qualification", ar: "التأهيل" },
+  { en: "Scheduling", ar: "جدولة المواعيد" },
+];
+
+const POD_HUMAN: Copy[] = [
+  { en: "Strategy", ar: "الاستراتيجية" },
+  { en: "Creative direction", ar: "التوجيه الإبداعي" },
+  { en: "Media buying", ar: "شراء الإعلانات" },
+  { en: "Optimization", ar: "التحسين" },
+  { en: "Relationship building", ar: "بناء العلاقة" },
+  { en: "Quality control", ar: "ضبط الجودة" },
+  { en: "Objection handling", ar: "معالجة الاعتراضات" },
+  { en: "Decision making", ar: "اتخاذ القرار" },
+];
+
+const POD_PILLARS: Copy[] = [
+  { en: "Marketing", ar: "التسويق" },
+  { en: "Automation", ar: "الأتمتة" },
+  { en: "Content", ar: "المحتوى" },
+  { en: "Lead follow-up", ar: "متابعة العملاء" },
+  { en: "Customer conversion", ar: "تحويل العملاء" },
+];
+
+const POD_TABS: { href: string; en: string; ar: string }[] = [
+  { href: "#hiring", en: "Hiring Reality", ar: "واقع التوظيف" },
+  { href: "#infrastructure", en: "Infrastructure", ar: "البنية" },
+  { href: "#ai-human", en: "AI + Human", ar: "الذكاء والإنسان" },
+  { href: "#team", en: "The Team", ar: "الفريق" },
+  { href: "#plans", en: "Pricing", ar: "الأسعار" },
+  { href: "/#audit", en: "Consultation", ar: "الاستشارة" },
+];
+
+function HumanPodTabs() {
+  let { t: e } = useLocale();
+  return (
+    <nav className="mt-8 flex flex-wrap gap-2">
+      {POD_TABS.map((tab) => (
+        <a
+          key={tab.href}
+          href={tab.href}
+          className="shrink-0 rounded-full border border-border bg-card px-4 py-2 text-[0.78rem] font-semibold transition duration-200 hover:-translate-y-0.5 hover:border-foreground hover:bg-foreground hover:text-background"
+        >
+          {e(tab)}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+function HumanPodHero() {
+  let { t: e } = useLocale();
+  return (
+    <section className="w-full px-5 pb-16 pt-28 md:px-10 md:pb-24 md:pt-36">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <p className="mb-6 inline-flex rounded-full border border-border bg-card px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-foreground/80">
+            {e({ en: "Sales OS + Human Pod", ar: "نظام المبيعات + فريق بشري" })}
+          </p>
+          <h1 className="font-display text-[2.5rem] font-bold leading-[1.05] tracking-[-0.035em] md:text-[4rem]">
+            {e({ en: "Meet the team", ar: "تعرّف على الفريق" })}
+            <br />
+            <span className="text-foreground/75">
+              {e({ en: "you don’t have to hire.", ar: "الذي لا تحتاج إلى توظيفه." })}
+            </span>
+          </h1>
+          <p className="mt-7 max-w-xl text-base leading-relaxed text-foreground/90 md:text-lg">
+            {e({
+              en: "One coordinated growth team for marketing, automation, content, lead follow-up and customer conversion.",
+              ar: "فريق نمو واحد منسّق للتسويق والأتمتة والمحتوى ومتابعة العملاء وتحويلهم.",
+            })}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <CtaLink href="#plans">
+              {e({ en: "See Plans", ar: "شاهد الباقات" })}
+            </CtaLink>
+            <CtaLink href="/#audit" variant="ghost">
+              {e({ en: "Start Your Free Consultation", ar: "ابدأ استشارتك المجانية" })}
+            </CtaLink>
+          </div>
+          <HumanPodTabs />
+        </div>
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] md:p-7">
+          <div className="grid-lines pointer-events-none absolute inset-0 opacity-60" />
+          <div className="relative grid grid-cols-2 gap-2">
+            {POD_ROLES.slice(0, 4).map((role, index) => (
+              <div
+                key={role.title.en}
+                className="min-h-[4.5rem] rounded-xl border border-border bg-background px-3 py-3 transition duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-sm"
+              >
+                <p className="text-[0.62rem] font-bold tracking-[0.14em] text-accent-strong">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <p className="mt-1 text-[0.78rem] font-semibold leading-snug">{e(role.title)}</p>
+              </div>
+            ))}
+          </div>
+          <div className="relative my-4 flex justify-center">
+            <div className="rounded-2xl bg-ink px-6 py-4 text-center text-ink-foreground shadow-[0_18px_40px_-24px_rgba(0,0,0,0.7)]">
+              <p className="font-display text-lg font-bold tracking-tight">Human Pod</p>
+              <p className="mt-1 text-[0.68rem] opacity-80">
+                {e({ en: "8 specialists. 1 team.", ar: "8 متخصصين. فريق واحد." })}
+              </p>
+            </div>
+          </div>
+          <div className="relative grid grid-cols-2 gap-2">
+            {POD_ROLES.slice(4).map((role, index) => (
+              <div
+                key={role.title.en}
+                className="min-h-[4.5rem] rounded-xl border border-border bg-background px-3 py-3 transition duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-sm"
+              >
+                <p className="text-[0.62rem] font-bold tracking-[0.14em] text-accent-strong">
+                  {String(index + 5).padStart(2, "0")}
+                </p>
+                <p className="mt-1 text-[0.78rem] font-semibold leading-snug">{e(role.title)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HumanPodHiring() {
+  let { t: e } = useLocale();
+  return (
+    <Section id="hiring" tone="sand">
+      <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
+        {e({ en: "The Hiring Reality", ar: "واقع التوظيف" })}
+      </p>
+      <h2 className="max-w-3xl font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
+        {e({ en: "Eight hires. Eight salaries.", ar: "ثمانية توظيفات. ثمانية رواتب." })}
+        <br />
+        <span className="text-foreground/75">
+          {e({ en: "Eight people to manage.", ar: "ثمانية أشخاص لإدارتهم." })}
+        </span>
+      </h2>
+      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {POD_ROLES.map((role, index) => (
+          <div
+            key={role.title.en}
+            className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 transition duration-200 hover:-translate-y-1 hover:border-foreground/25 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.45)]"
+          >
+            <p className="font-display text-sm font-bold text-accent-strong">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+            <p className="mt-4 font-display text-lg font-bold leading-tight tracking-tight">
+              {e(role.title)}
+            </p>
+            <p className="mt-auto pt-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-foreground/55">
+              {e({ en: "Separate hire", ar: "توظيف منفصل" })}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-3xl bg-ink px-6 py-6 text-ink-foreground md:px-8 md:py-7">
+        <p className="max-w-xl font-display text-xl font-bold tracking-tight md:text-2xl">
+          {e({
+            en: "Or one pod, one invoice, one point of contact.",
+            ar: "أو فريق واحد، فاتورة واحدة، وجهة تواصل واحدة.",
+          })}
+        </p>
+        <CtaLink href="#plans" variant="light">
+          {e({ en: "See Plans", ar: "شاهد الباقات" })}
+        </CtaLink>
+      </div>
+    </Section>
+  );
+}
+
+function HumanPodInfrastructure() {
+  let { t: e } = useLocale();
+  return (
+    <Section id="infrastructure">
+      <div className="max-w-3xl">
+        <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
+          {e({ en: "One Coordinated Infrastructure", ar: "بنية واحدة منسّقة" })}
+        </p>
+        <h2 className="font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
+          {e({
+            en: "Put one growth team at the centre of your business.",
+            ar: "ضع فريق نمو واحداً في قلب عملك.",
+          })}
+        </h2>
+      </div>
+      <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {POD_PILLARS.map((pillar, index) => (
+          <div
+            key={pillar.en}
+            className="rounded-2xl border border-border bg-card px-5 py-6 transition duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-sm"
+          >
+            <p className="text-[0.62rem] font-bold tracking-[0.16em] text-accent-strong">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+            <p className="mt-3 font-display text-lg font-bold tracking-tight">{e(pillar)}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 rounded-3xl bg-ink px-8 py-8 text-center text-ink-foreground md:py-10">
+        <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-accent-strong">
+          Sales OS
+        </p>
+        <p className="mt-2 font-display text-3xl font-bold tracking-tight">Human Pod</p>
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed opacity-80">
+          {e({
+            en: "Marketing, automation, content, follow-up and conversion, run as one system.",
+            ar: "التسويق والأتمتة والمحتوى والمتابعة والتحويل، كنظام واحد.",
+          })}
+        </p>
+      </div>
+    </Section>
+  );
+}
+
+function HumanPodSplit() {
+  let { t: e } = useLocale();
+  return (
+    <Section id="ai-human" tone="sand">
+      <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
+        {e({ en: "AI + Human", ar: "الذكاء الاصطناعي + الإنسان" })}
+      </p>
+      <h2 className="max-w-3xl font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
+        {e({ en: "AI does the volume.", ar: "الذكاء الاصطناعي ينجز الحجم." })}
+        <br />
+        <span className="text-foreground/75">
+          {e({ en: "Humans do the thinking.", ar: "البشر يصنعون التفكير." })}
+        </span>
+      </h2>
+      <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-2">
+        <div className="flex h-full flex-col rounded-3xl border border-border bg-card p-7 md:p-8">
+          <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-accent-strong">
+            {e({ en: "The system", ar: "النظام" })}
+          </p>
+          <p className="mt-2 font-display text-3xl font-bold tracking-tight">AI</p>
+          <ul className="mt-6 grid flex-1 content-start gap-2 sm:grid-cols-2">
+            {POD_AI.map((item) => (
+              <li
+                key={item.en}
+                className="rounded-xl bg-sand px-3 py-2.5 text-sm font-medium transition duration-200 hover:bg-sand-deep"
+              >
+                {e(item)}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex h-full flex-col rounded-3xl bg-ink p-7 text-ink-foreground md:p-8">
+          <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-accent-strong">
+            {e({ en: "The pod", ar: "الفريق" })}
+          </p>
+          <p className="mt-2 font-display text-3xl font-bold tracking-tight">
+            {e({ en: "Human", ar: "الإنسان" })}
+          </p>
+          <ul className="mt-6 grid flex-1 content-start gap-2 sm:grid-cols-2">
+            {POD_HUMAN.map((item) => (
+              <li
+                key={item.en}
+                className="rounded-xl bg-white/10 px-3 py-2.5 text-sm font-medium transition duration-200 hover:bg-white/20"
+              >
+                {e(item)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function HumanPodTeam() {
+  let { t: e } = useLocale();
+  return (
+    <Section id="team">
+      <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
+        {e({ en: "Meet The Team", ar: "تعرّف على الفريق" })}
+      </p>
+      <h2 className="max-w-3xl font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
+        {e({
+          en: "The specialists behind your growth.",
+          ar: "المتخصصون خلف نموك.",
+        })}
+      </h2>
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
+        {POD_ROLES.map((role, index) => (
+          <article
+            key={role.title.en}
+            className="flex h-full gap-5 rounded-2xl border border-border bg-card p-6 transition duration-200 hover:-translate-y-1 hover:border-foreground/25 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.45)]"
+          >
+            <span className="font-display text-2xl font-bold tracking-tight text-accent-strong">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div className="border-s border-border ps-5">
+              <h3 className="font-display text-xl font-bold tracking-tight">{e(role.title)}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/90">{e(role.body)}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function HumanPodPricing() {
+  let { t: e, money } = useLocale();
+  return (
+    <Section id="plans" tone="sand">
+      <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
+        {e({ en: "Pricing", ar: "الأسعار" })}
+      </p>
+      <h2 className="max-w-3xl font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] md:text-5xl">
+        {e({ en: "Sales OS + Human Pod", ar: "نظام المبيعات + فريق بشري" })}
+      </h2>
+      <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">
+        {e({
+          en: "Three ways to put the full pod behind your sales system. The price follows the currency selected in the header.",
+          ar: "ثلاث طرق لوضع الفريق الكامل خلف نظام مبيعاتك. السعر يتبع العملة المختارة في الأعلى.",
+        })}
+      </p>
+      <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">
+        {AGENT_PLANS.map((plan) => (
+          <PricingCard key={plan.name.en} plan={plan} money={money} t={e} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function HumanPodClose() {
+  let { t: e } = useLocale();
+  return (
+    <Section id="consult" tone="dark">
+      <div className="mx-auto max-w-3xl text-center">
+        <h2 className="font-display text-[2rem] font-bold leading-[1.08] tracking-[-0.03em] text-ink-foreground md:text-5xl">
+          {e({ en: "Ready to Build the Team?", ar: "مستعد لبناء الفريق؟" })}
+        </h2>
+        <p className="mt-5 font-display text-xl font-semibold tracking-tight text-ink-foreground/85 md:text-2xl">
+          {e({
+            en: "One system. One team. One point of accountability.",
+            ar: "نظام واحد. فريق واحد. جهة محاسبة واحدة.",
+          })}
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-2">
+          {POD_ROLES.map((role) => (
+            <span
+              key={role.title.en}
+              className="rounded-full border border-white/15 px-3 py-1.5 text-[0.75rem] font-medium transition duration-200 hover:border-white/40 hover:bg-white/10"
+            >
+              {e(role.title)}
+            </span>
+          ))}
+        </div>
+        <CtaLink variant="light" href="/#audit" className="mt-8">
+          {e({ en: "Start Your Free Consultation", ar: "ابدأ استشارتك المجانية" })}
+        </CtaLink>
+      </div>
+    </Section>
+  );
+}
+
+export function HumanPodPage() {
+  return (
+    <LocaleProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <SiteHeader />
+        <main className="pb-20 md:pb-0">
+          <HumanPodHero />
+          <HumanPodHiring />
+          <HumanPodInfrastructure />
+          <HumanPodSplit />
+          <HumanPodTeam />
+          <HumanPodPricing />
+          <HumanPodClose />
+        </main>
+        <SiteFooter />
+        <FloatingActions />
+      </div>
+    </LocaleProvider>
+  );
+}
+
 function RevenueOS() {
+  useEffect(() => {
+    const id = window.location.hash.replace("#", "");
+    if (!id) return;
+    const scroll = () => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 96;
+      window.scrollTo(0, top);
+    };
+    scroll();
+    const timer = window.setTimeout(scroll, 120);
+    return () => window.clearTimeout(timer);
+  }, []);
   return (
     <LocaleProvider>
       <div className="min-h-screen bg-background text-foreground">
