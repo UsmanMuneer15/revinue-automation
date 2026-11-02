@@ -313,11 +313,6 @@ const NAV_LINKS = [
     ar: "القطاعات",
   },
   {
-    href: "/sales-human-pod",
-    en: "Sales Human Pod",
-    ar: "فريق المبيعات",
-  },
-  {
     href: "/#pricing",
     en: "Pricing",
     ar: "الأسعار",
@@ -329,7 +324,7 @@ const NAV_LINKS = [
   },
 ];
 function SiteHeader() {
-  let { t: e, lang: t, setLang: n, country: a, setCountry: o } = useLocale(),
+  let { t: e, lang: t, setLang: n } = useLocale(),
     path = usePathname(),
     [c, l] = useState(false),
     [u, d] = useState(false);
@@ -370,20 +365,15 @@ function SiteHeader() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <label className="hidden sm:block">
-            <span className="sr-only">Country</span>
-            <select
-              value={a}
-              onChange={(event) => o(event.target.value as Country)}
-              className="rounded-full border border-border bg-card px-3 py-1.5 text-[0.72rem] font-semibold outline-none"
-            >
-              {GCC_MARKETS.map((market) => (
-                <option key={market.code} value={market.code}>
-                  {market.flag} {market.short} · {market.currencyEn}
-                </option>
-              ))}
-            </select>
-          </label>
+          <a
+            href="/sales-human-pod"
+            className={`hidden whitespace-nowrap rounded-full border px-3 py-1.5 text-[0.72rem] font-semibold transition-colors hover:bg-accent sm:inline-flex ${path === "/sales-human-pod" ? "border-foreground bg-accent" : "border-border"}`}
+          >
+            {e({
+              en: "Sales OS + Human Pod",
+              ar: "نظام المبيعات + فريق بشري",
+            })}
+          </a>
           <button
             onClick={() => n(t === "en" ? "ar" : "en")}
             className="rounded-full border border-border px-3 py-1.5 text-[0.72rem] font-semibold transition-colors hover:bg-accent"
@@ -411,6 +401,16 @@ function SiteHeader() {
       {u && (
         <div className="border-t border-border bg-background px-5 py-4 lg:hidden">
           <div className="grid gap-1">
+            <a
+              href="/sales-human-pod"
+              onClick={() => d(false)}
+              className={`rounded-lg px-2 py-2.5 text-sm font-medium hover:bg-accent ${path === "/sales-human-pod" ? "bg-accent" : ""}`}
+            >
+              {e({
+                en: "Sales OS + Human Pod",
+                ar: "نظام المبيعات + فريق بشري",
+              })}
+            </a>
             {NAV_LINKS.map((item) => (
               <a
                 key={item.href}
@@ -422,20 +422,6 @@ function SiteHeader() {
               </a>
             ))}
           </div>
-          <label className="mt-3 block">
-            <span className="sr-only">Country</span>
-            <select
-              value={a}
-              onChange={(event) => o(event.target.value as Country)}
-              className="w-full rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold outline-none"
-            >
-              {GCC_MARKETS.map((market) => (
-                <option key={market.code} value={market.code}>
-                  {market.flag} {market.short} · {market.currencyEn}
-                </option>
-              ))}
-            </select>
-          </label>
         </div>
       )}
     </header>
@@ -1966,8 +1952,8 @@ function CampaignsSection() {
       <SectionHeading>
         <span className="line">
           {e({
-            en: "Your CRM Shouldn't Just Store Contacts.",
-            ar: "نظامك ليس مجرد دفتر جهات اتصال.",
+          en: "Your Sales OS Shouldn't Just Store Contacts.",
+          ar: "نظام المبيعات ليس مجرد دفتر جهات اتصال.",
           })}
         </span>
         <span className="line text-foreground/75">
@@ -2306,8 +2292,8 @@ function AutomationsSection() {
 const PLATFORM_GROUPS = [
   {
     t: {
-      en: "CRM & Sales",
-      ar: "إدارة العملاء والمبيعات",
+      en: "Sales OS",
+      ar: "نظام المبيعات",
     },
     items: [
       {
@@ -2675,8 +2661,8 @@ function PlatformSection() {
 const VALUE_ITEMS = [
   {
     t: {
-      en: "AI Revenue CRM",
-      ar: "نظام إدارة الإيرادات",
+      en: "Sales OS",
+      ar: "نظام المبيعات",
     },
     v: 1e3,
   },
@@ -2828,8 +2814,8 @@ const COMPARISON_ROWS = [
       ar: "نظام عملاء منفصل",
     },
     {
-      en: "One CRM",
-      ar: "نظام واحد",
+      en: "One Sales OS",
+      ar: "نظام مبيعات واحد",
     },
   ],
   [
@@ -2974,8 +2960,8 @@ const MANAGED_ITEMS = [
     ar: "رسم مسار الإيرادات",
   },
   {
-    en: "CRM configuration",
-    ar: "إعداد النظام",
+    en: "Sales OS configuration",
+    ar: "إعداد نظام المبيعات",
   },
   {
     en: "Pipeline setup",
@@ -3102,8 +3088,8 @@ const WEEK_PLAN = [
     },
     items: [
       {
-        en: "CRM",
-        ar: "النظام",
+        en: "Sales OS",
+        ar: "نظام المبيعات",
       },
       {
         en: "Pipeline",
@@ -3445,7 +3431,7 @@ function AgencySection() {
     <Section tone="sand">
       <SectionHeading>
         {e({
-          en: "More Than A CRM Agency.",
+          en: "More Than A Sales OS Agency.",
           ar: "أكثر من مجرد وكالة أنظمة.",
         })}
       </SectionHeading>
@@ -3458,8 +3444,8 @@ function AgencySection() {
             },
             items: [
               {
-                en: "CRM",
-                ar: "نظام إدارة العملاء",
+                en: "Sales OS",
+                ar: "نظام المبيعات",
               },
               {
                 en: "AI",
@@ -3622,7 +3608,7 @@ const SOFTWARE_PLANS: PricingPlan[] = [
     price: 2500,
     intro: { en: "Includes", ar: "تشمل" },
     items: [
-      { en: "CRM", ar: "نظام إدارة العملاء" },
+      { en: "Sales OS", ar: "نظام المبيعات" },
       { en: "Sales pipeline", ar: "مسار المبيعات" },
       { en: "Unified inbox", ar: "صندوق وارد موحّد" },
       { en: "WhatsApp integration", ar: "تكامل واتساب" },
@@ -3724,7 +3710,7 @@ const AGENT_PLANS: PricingPlan[] = [
     intro: { en: "Includes", ar: "تشمل" },
     items: [
       { en: "AI Sales & Marketing OS", ar: "نظام المبيعات والتسويق بالذكاء الاصطناعي" },
-      { en: "CRM & Pipeline", ar: "نظام العملاء ومسار المبيعات" },
+      { en: "Sales OS & Pipeline", ar: "نظام المبيعات ومسار البيع" },
       { en: "WhatsApp Integration", ar: "تكامل واتساب" },
       { en: "Email Automation", ar: "أتمتة البريد الإلكتروني" },
       { en: "AI Lead Follow-Up", ar: "متابعة العملاء بالذكاء الاصطناعي" },
@@ -4005,8 +3991,29 @@ function PricingCard({
   );
 }
 
+function CurrencySwitch() {
+  let { t, country, setCountry } = useLocale();
+  return (
+    <div className="mt-8 flex flex-wrap gap-2">
+      {GCC_MARKETS.map((market) => (
+        <button
+          key={market.code}
+          onClick={() => setCountry(market.code)}
+          className={`rounded-full border px-4 py-2 text-[0.78rem] font-semibold transition-colors ${country === market.code ? "border-transparent bg-foreground text-background" : "border-border bg-card opacity-70 hover:opacity-100"}`}
+        >
+          {market.flag}{" "}
+          {t({
+            en: `${market.short} · ${market.currencyEn}`,
+            ar: `${market.ar} · ${market.currencyAr}`,
+          })}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function PricingSection() {
-  let { t: e, money: t, country: n, setCountry: r } = useLocale();
+  let { t: e, money: t } = useLocale();
   return (
     <Section id="pricing">
       <SectionHeading>
@@ -4023,21 +4030,7 @@ function PricingSection() {
           })}
         </span>
       </SectionHeading>
-      <div className="mt-8 flex flex-wrap gap-2">
-        {GCC_MARKETS.map((market) => (
-          <button
-            key={market.code}
-            onClick={() => r(market.code)}
-            className={`rounded-full border px-4 py-2 text-[0.78rem] font-semibold transition-colors ${n === market.code ? "border-transparent bg-foreground text-background" : "border-border bg-card opacity-70 hover:opacity-100"}`}
-          >
-            {market.flag}{" "}
-            {e({
-              en: `${market.short} · ${market.currencyEn}`,
-              ar: `${market.ar} · ${market.currencyAr}`,
-            })}
-          </button>
-        ))}
-      </div>
+      <CurrencySwitch />
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
         {SOFTWARE_PLANS.map((plan) => (
           <PricingCard key={plan.name.en} plan={plan} money={t} t={e} />
@@ -4860,7 +4853,7 @@ const POD_ROLES: { title: Copy; body: Copy }[] = [
     },
   },
   {
-    title: { en: "CRM & Automation Expert", ar: "خبير أنظمة العملاء والأتمتة" },
+    title: { en: "Sales OS & Automation Expert", ar: "خبير نظام المبيعات والأتمتة" },
     body: {
       en: "Builds your funnels, pipelines, automations, lead routing and integrations so no lead is ever lost.",
       ar: "يبني القنوات ومسارات البيع والأتمتة وتوجيه العملاء والتكاملات حتى لا يضيع أي عميل.",
@@ -4897,7 +4890,7 @@ const POD_ROLES: { title: Copy; body: Copy }[] = [
   {
     title: { en: "Data & Research Assistant", ar: "مساعد البيانات والبحث" },
     body: {
-      en: "Supports market and lead research, data management, CRM hygiene and campaign operations behind the scenes.",
+      en: "Supports market and lead research, data management, Sales OS hygiene and campaign operations behind the scenes.",
       ar: "يدعم بحث السوق والعملاء وإدارة البيانات ونظافة النظام وعمليات الحملات.",
     },
   },
@@ -5232,10 +5225,11 @@ function HumanPodPricing() {
       </h2>
       <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">
         {e({
-          en: "Three ways to put the full pod behind your sales system. The price follows the currency selected in the header.",
-          ar: "ثلاث طرق لوضع الفريق الكامل خلف نظام مبيعاتك. السعر يتبع العملة المختارة في الأعلى.",
+          en: "Three ways to put the full pod behind your sales system. Choose your market and the prices follow that currency.",
+          ar: "ثلاث طرق لوضع الفريق الكامل خلف نظام مبيعاتك. اختر سوقك وتتبع الأسعار عملته.",
         })}
       </p>
+      <CurrencySwitch />
       <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">
         {AGENT_PLANS.map((plan) => (
           <PricingCard key={plan.name.en} plan={plan} money={money} t={e} />
