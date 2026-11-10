@@ -4125,10 +4125,10 @@ function ResultsSection() {
             rel="noreferrer"
             className="group mb-4 inline-flex items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2 shadow-[0_12px_30px_-24px_rgba(0,0,0,0.4)] transition duration-200 hover:-translate-y-0.5 hover:border-foreground/30"
           >
-            <img src="/baku-holidays-icon.png" alt="" className="size-8 shrink-0 rounded-lg" />
-            <img src="/baku-holidays-logo.png" alt="Baku Holidays" className="h-8 w-auto" />
-            <span className="h-6 w-px bg-border" />
-            <span className="flex items-center gap-1.5 text-[0.8rem] font-semibold">
+            <img src="/baku-holidays-icon.png" alt="" className="size-12 shrink-0 rounded-xl" />
+            <img src="/baku-holidays-logo.png" alt="Baku Holidays" className="h-16 w-auto" />
+            <span className="h-8 w-px bg-border" />
+            <span className="flex items-center gap-1.5 text-sm font-semibold">
               bakuholidays.com
               <svg
                 viewBox="0 0 24 24"
@@ -4145,17 +4145,17 @@ function ResultsSection() {
               </svg>
             </span>
           </a>
-          <div className="overflow-hidden rounded-t-2xl border border-black/20 bg-[#1c1c1e] p-2 pb-0 shadow-[0_30px_70px_-36px_rgba(0,0,0,0.55)]">
+          <div className="mx-1.5 overflow-hidden rounded-t-[1.15rem] bg-[#0c0c0e] px-[7px] pt-[6px] pb-3.5">
             <img
               src="/baku-holidays-dashboard.png"
               alt="Baku Holidays dashboard in Sales and Marketing OS, showing opportunity status, funnel and revenue"
-              className="w-full rounded-t-md"
+              className="block w-full rounded-[0.4rem]"
             />
-            <div className="h-3 bg-[#1c1c1e]" />
           </div>
-          <div className="relative h-5 rounded-b-[1.1rem] bg-gradient-to-b from-[#f7f7f8] via-[#d9d9de] to-[#9b9ba3] shadow-[0_16px_28px_-18px_rgba(0,0,0,0.55)]">
-            <span className="absolute left-1/2 top-0 h-2.5 w-24 -translate-x-1/2 rounded-b-md bg-gradient-to-b from-[#ececef] to-[#c5c5cc] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.18)]" />
+          <div className="relative -mt-px h-5 rounded-b-lg bg-[linear-gradient(180deg,#f6f6f8_0%,#e6e6ea_58%,#b7b7be_80%,#6a6a72_100%)] shadow-[inset_0_1px_0_#fff,0_12px_14px_-12px_rgba(0,0,0,0.5)]">
+            <span className="absolute left-1/2 top-0 h-[5px] w-[16%] min-w-14 -translate-x-1/2 rounded-b-md bg-[linear-gradient(180deg,#c6c6cc,#9e9ea6)] shadow-[inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_2px_rgba(0,0,0,0.32)]" />
           </div>
+          <div className="mx-auto h-2 w-[70%] rounded-full bg-black/10 blur-sm" />
         </div>
       </div>
     </Section>
@@ -5366,7 +5366,7 @@ function HumanPodTeam() {
 function HumanPodPricing() {
   let { t: e, money } = useLocale();
   return (
-    <Section id="plans" tone="sand">
+    <Section id="plans">
       <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
         {e({ en: "Pricing", ar: "الأسعار" })}
       </p>
@@ -5432,6 +5432,7 @@ export function HumanPodPage() {
           <HumanPodInfrastructure />
           <HumanPodSplit />
           <HumanPodTeam />
+          <ResultsSection />
           <HumanPodPricing />
           <HumanPodClose />
         </main>
