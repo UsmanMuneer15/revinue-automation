@@ -4012,6 +4012,156 @@ function CurrencySwitch() {
   );
 }
 
+const RESULT_ITEMS: { icon: string[]; copy: Copy }[] = [
+  {
+    icon: ["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"],
+    copy: {
+      en: "Centralised customer conversations from WhatsApp, Instagram, Facebook, Live Chat and website into one Sales & Marketing OS inbox.",
+      ar: "توحيد محادثات العملاء من واتساب وإنستغرام وفيسبوك والدردشة المباشرة والموقع في صندوق وارد واحد ضمن نظام المبيعات والتسويق.",
+    },
+  },
+  {
+    icon: ["M13 2 3 14h9l-1 8 10-12h-9l1-8z"],
+    copy: {
+      en: "Connected and managed social media publishing through a single Social Planner.",
+      ar: "ربط النشر على وسائل التواصل وإدارته من مخطّط اجتماعي واحد.",
+    },
+  },
+  {
+    icon: ["M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z", "M19 17v4", "M17 19h4"],
+    copy: {
+      en: "Deployed an AI assistant across all major customer-facing channels to handle enquiries consistently.",
+      ar: "تشغيل مساعد ذكاء اصطناعي عبر قنوات العملاء الرئيسية للرد على الاستفسارات بأسلوب ثابت.",
+    },
+  },
+  {
+    icon: ["M4 5h16v11H8l-4 4z", "M9 10.5h.01", "M12 10.5h.01", "M15 10.5h.01"],
+    copy: {
+      en: "Built a branded website chatbot with travel-focused messaging and guided conversation options.",
+      ar: "بناء روبوت دردشة بهوية العلامة على الموقع، برسائل موجهة للسفر وخيارات حوار موجّهة.",
+    },
+  },
+  {
+    icon: ["M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z", "m9 12 2 2 4-4"],
+    copy: {
+      en: "Trained the AI assistant using Baku Holidays' own website content across 144 pages.",
+      ar: "تدريب المساعد على محتوى موقع باكو هوليدايز عبر 144 صفحة.",
+    },
+  },
+  {
+    icon: [
+      "M6 3v12",
+      "M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+      "M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+      "M18 9a9 9 0 0 1-9 9",
+    ],
+    copy: {
+      en: "Automated website lead capture through a dedicated webhook workflow directly into the Sales & Marketing OS CRM.",
+      ar: "أتمتة التقاط عملاء الموقع عبر مسار ويب هوك مباشرة إلى نظام إدارة العملاء ضمن نظام المبيعات والتسويق.",
+    },
+  },
+  {
+    icon: [
+      "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z",
+      "M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z",
+      "M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+    ],
+    copy: {
+      en: "Implemented UTM-based lead source tracking to identify where enquiries were coming from, including Google.",
+      ar: "تتبع مصدر العملاء عبر معاملات UTM لمعرفة مصدر الاستفسارات، بما في ذلك جوجل.",
+    },
+  },
+];
+
+function ResultsSection() {
+  let { t: e } = useLocale();
+  return (
+    <Section id="results" tone="sand">
+      <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] opacity-80">
+        {e({
+          en: "Case study",
+          ar: "دراسة حالة",
+        })}
+      </p>
+      <SectionHeading>
+        <span className="line">
+          {e({
+            en: "Real Results. Proven Impact.",
+            ar: "نتائج حقيقية. أثر مثبت.",
+          })}
+        </span>
+      </SectionHeading>
+      <div className="mt-10 grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+        <ol className="grid gap-3">
+            {RESULT_ITEMS.map((item) => (
+              <li
+                key={item.copy.en}
+                className="flex items-center gap-4 rounded-2xl border border-border bg-card px-4 py-3.5 transition duration-200 hover:-translate-y-0.5 hover:border-foreground/25 hover:shadow-[0_16px_40px_-30px_rgba(0,0,0,0.45)]"
+              >
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sand text-accent-strong">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.7}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="size-5"
+                    aria-hidden
+                  >
+                    {item.icon.map((d) => (
+                      <path key={d} d={d} />
+                    ))}
+                  </svg>
+                </span>
+                <p className="text-[0.84rem] leading-relaxed">{e(item.copy)}</p>
+              </li>
+            ))}
+          </ol>
+        <div>
+          <a
+            href="https://www.bakuholidays.com/"
+            target="_blank"
+            rel="noreferrer"
+            className="group mb-4 inline-flex items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2 shadow-[0_12px_30px_-24px_rgba(0,0,0,0.4)] transition duration-200 hover:-translate-y-0.5 hover:border-foreground/30"
+          >
+            <img src="/baku-holidays-icon.png" alt="" className="size-8 shrink-0 rounded-lg" />
+            <img src="/baku-holidays-logo.png" alt="Baku Holidays" className="h-8 w-auto" />
+            <span className="h-6 w-px bg-border" />
+            <span className="flex items-center gap-1.5 text-[0.8rem] font-semibold">
+              bakuholidays.com
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-3.5 text-accent-strong transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden
+              >
+                <path d="M7 17 17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+          </a>
+          <div className="overflow-hidden rounded-t-2xl border border-black/20 bg-[#1c1c1e] p-2 pb-0 shadow-[0_30px_70px_-36px_rgba(0,0,0,0.55)]">
+            <img
+              src="/baku-holidays-dashboard.png"
+              alt="Baku Holidays dashboard in Sales and Marketing OS, showing opportunity status, funnel and revenue"
+              className="w-full rounded-t-md"
+            />
+            <div className="h-3 bg-[#1c1c1e]" />
+          </div>
+          <div className="relative h-5 rounded-b-[1.1rem] bg-gradient-to-b from-[#f7f7f8] via-[#d9d9de] to-[#9b9ba3] shadow-[0_16px_28px_-18px_rgba(0,0,0,0.55)]">
+            <span className="absolute left-1/2 top-0 h-2.5 w-24 -translate-x-1/2 rounded-b-md bg-gradient-to-b from-[#ececef] to-[#c5c5cc] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.18)]" />
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 function PricingSection() {
   let { t: e, money: t } = useLocale();
   return (
@@ -5329,6 +5479,7 @@ function RevenueOS() {
           <ValueSection />
           <ManagedSection />
           <SolutionsSection />
+          <ResultsSection />
           <PricingSection />
           <FaqSection />
           <AuditSection />
